@@ -2,7 +2,7 @@ package com.booleanuk.api.Model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import org.apache.tomcat.util.http.parser.Authorization;
+
 
 @Entity
 @Table(name = "books")
