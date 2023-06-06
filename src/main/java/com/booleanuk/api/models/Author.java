@@ -23,6 +23,10 @@ public class Author {
     @JsonIgnoreProperties("author")
     private List<Book> books;
 
+    public Author(int id) {
+        this.id = id;
+    }
+
     public Author() {
         super();
     }
