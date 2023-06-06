@@ -266,8 +266,35 @@ components:
           example: "book genre"
         Author:
           type: object
+          properties:
+            id:
+              type: integer
+              example: 1
+            first_name:
+              type: string
+              example: "first_name"
+            last_name:
+              type: string
+              example: "last_name"
+            email:
+              type: String
+              format: email
+              example: "email@example.com"
+            alive:
+              type: boolean
+              example: true
         Publisher:
           type: object
+          properties:
+            id:
+              type: integer
+              example: 1
+            name:
+              type: string
+              example: author
+            location:
+              type: string
+              example: hell
     Book:
       type: object
       properties:
