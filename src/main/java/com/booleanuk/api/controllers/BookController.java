@@ -1,12 +1,7 @@
 package com.booleanuk.api.controllers;
 
-import com.booleanuk.api.models.Author;
-import com.booleanuk.api.models.Book;
-import com.booleanuk.api.models.Publisher;
-import com.booleanuk.api.models.dtos.BookRequestBodyDTO;
-import com.booleanuk.api.repositories.AuthorRepository;
-import com.booleanuk.api.repositories.BookRepository;
-import com.booleanuk.api.repositories.PublisherRepository;
+import com.booleanuk.api.models.*;
+import com.booleanuk.api.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +14,7 @@ import java.util.List;
 @RequestMapping("books")
 public class BookController {
 
+    private record BookRequestBodyDTO (String title, String genre, int author_id, int publisher_id) {}
     @Autowired
     private BookRepository bookRepo;
     @Autowired
@@ -39,32 +35,30 @@ public class BookController {
 
     @PostMapping
     public ResponseEntity<Book> create(@RequestBody BookRequestBodyDTO bookDTO) {
-        Author author = this.authorRepo.findById(bookDTO.getAuthor_id())
+        Author author = this.authorRepo.findById(bookDTO.author_id())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Author with this id doesn't exist."));
 
-        Publisher publisher = this.publisherRepo.findById(bookDTO.getPublisher_id())
+        Publisher publisher = this.publisherRepo.findById(bookDTO.publisher_id())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Publisher with this id doesn't exist."));
 
-        Book newBook = new Book(bookDTO.getTitle(), bookDTO.getGenre());
-        newBook.setAuthor(author);
-        newBook.setPublisher(publisher);
+        Book newBook = new Book(bookDTO.title(), bookDTO.genre(), author, publisher);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(this.bookRepo.save(newBook));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Book> update(@PathVariable int id, @RequestBody BookRequestBodyDTO bookDTO) {
-        Author author = this.authorRepo.findById(bookDTO.getAuthor_id())
+        Author author = this.authorRepo.findById(bookDTO.author_id())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Author with this id doesn't exist."));
 
-        Publisher publisher = this.publisherRepo.findById(bookDTO.getPublisher_id())
+        Publisher publisher = this.publisherRepo.findById(bookDTO.publisher_id())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Publisher with this id doesn't exist."));
 
         Book bookToUpdate = this.bookRepo.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Book with this id doesn't exist."));
 
-        bookToUpdate.setTitle(bookDTO.getTitle());
-        bookToUpdate.setGenre(bookDTO.getGenre());
+        bookToUpdate.setTitle(bookDTO.title());
+        bookToUpdate.setGenre(bookDTO.genre());
         bookToUpdate.setAuthor(author);
         bookToUpdate.setPublisher(publisher);
 

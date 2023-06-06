@@ -17,7 +17,7 @@ public class Book {
     @JoinColumn(name = "author_id")
     @JsonIgnoreProperties("books")
     private Author author;
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn(name = "publisher_id")
     @JsonIgnoreProperties("books")
     private Publisher publisher;
@@ -25,9 +25,12 @@ public class Book {
     public Book() {
         super();
     }
-    public Book(String title, String genre) {
+
+    public Book(String title, String genre, Author author, Publisher publisher) {
         this.title = title;
         this.genre = genre;
+        this.author = author;
+        this.publisher = publisher;
     }
 
     public int getId() {
