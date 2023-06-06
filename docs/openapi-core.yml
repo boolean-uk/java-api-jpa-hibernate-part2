@@ -5,44 +5,44 @@ info:
   version: 0.2.2
 
 servers:
-  - url: http://localhost:4000
+  - url: http://localhost:4000/book
 tags:
-  - name: examples
+  - name: books
 paths:
-  /examples:
+  /books:
     post:
       tags:
-        - examples
-      summary: Example POST route
-      description: Description of an example POST route
+        - books
+      summary: Book POST route
+      description: Description of an book POST route
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateExample'
+              $ref: '#/components/schemas/Book'
       responses:
         201:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Example'
+                $ref: '#/components/schemas/Book'
     get:
       tags:
-        - examples
-      summary: Example GET route
-      description: Description of an example GET route
+        - books
+      summary: book GET route
+      description: Description of an books GET route
       responses:
         200:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AllExamples'
-  /examples/{id}:
+                $ref: '#/components/schemas/Book/getAll'
+  /books/{id}:
     put:
       tags:
-        - examples
-      summary: Example PUT route
-      description: Description of an example PUT route
+        - books
+      summary: Book PUT route
+      description: Description of an books PUT route
       parameters:
         - name: id
           in: path
@@ -50,26 +50,50 @@ paths:
           required: true
           schema:
             type: integer
+        - name: title
+          in: path
+          description: The title of the example to update
+          required: true
+          schema:
+            type: String
+        - name: genre
+          in: path
+          description: The genre of the book to update
+          required: true
+          schema:
+            type: String
+        - name: author_id
+          in: path
+          description: The Author Id of the book to update
+          required: true
+          schema:
+            type: Integer
+        - name: publisher_id
+          in: path
+          description: The Publisher Id of the book to update
+          required: true
+          schema:
+            type: Integer
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateExample'
+              $ref: '#/components/schemas/Book/update'
       responses:
         201:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Example'
+                $ref: '#/components/schemas/Book/update'
     delete:
       tags:
-        - examples
-      summary: Example DELETE route
-      description: Description of an example DELETE route
+        - books
+      summary: Book DELETE route
+      description: Description of an book DELETE route
       parameters:
         - name: id
           in: path
-          description: The ID of the example to delete
+          description: The ID of the book to delete
           required: true
           schema:
             type: integer
@@ -78,39 +102,48 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Example'
+                $ref: '#/components/schemas/Book/delete'
 
 components:
   schemas:
-    CreateExample:
+    CreateBook:
       type: object
-      required: [propertyOne, propertyTwo]
+      required: [title,genre ,author_id , publisher_id]
       properties:
-        propertyOne:
+        title:
           type: string
-          example: "Example Value"
-        propertyTwo:
-          type: email
-          format: email
-          example: "example@email.value"
-    Example:
-      type: object
-      properties:
-        id:
+          example: "100 years of Solitude"
+        genre:
+          type: string
+          format: string
+          example: "magical realism"
+        author_id:
           type: integer
-          example: 1
-        propertyOne:
+          format: integer
+          example: "1"
+        publisher_id:
+          type: integer
+          format: integer
+          example: "2"
+    Book:
+      type: object
+      properties:
+        title:
           type: string
-          example: "Example Value"
-        propertyTwo:
+          example: "100 years of Solitude"
+        genre:
           type: string
-          example: "example@email.value"
-        createdAt:
-          type: string
-          format: DateTime
-          pattern: YYYY-MM-DDTHH:MM:SS
-          example: 2023-03-14T11:01:56.633+00:00
-    AllExamples:
+          format: string
+          example: "magical realism"
+        author_id:
+          type: integer
+          format: integer
+          example: "1"
+        publisher_id:
+          type: integer
+          format: integer
+          example: "2"
+    AllBooks:
       type: array
       items:
-        $ref: '#/components/schemas/Example'
+        $ref: '#/components/schemas/Book/create'
