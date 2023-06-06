@@ -1,5 +1,7 @@
 package com.booleanuk.api.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -22,6 +24,7 @@ public class Publisher {
     @Column(name = "location")
     private String location;
     @OneToMany(mappedBy = "publisher")
-    @JsonManagedReference
+    //@JsonManagedReference
+    @JsonIgnoreProperties("publisher")
     private List<Book> books;
 }

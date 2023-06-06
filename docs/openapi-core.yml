@@ -264,9 +264,9 @@ components:
         genre:
           type: string
           example: "book genre"
-        Author:
+        author:
           type: object
-        Publisher:
+        publisher:
           type: object
     Book:
       type: object
