@@ -7,7 +7,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -41,9 +43,12 @@ public class BookController {
         Publisher publisher = this.publisherRepo.findById(bookDTO.publisher_id())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Publisher with this id doesn't exist."));
 
-        Book newBook = new Book(bookDTO.title(), bookDTO.genre(), author, publisher);
+        Book newBook = this.bookRepo.save(new Book(bookDTO.title(), bookDTO.genre(), author, publisher));
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(this.bookRepo.save(newBook));
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").
+                buildAndExpand(newBook.getId()).toUri();
+
+        return ResponseEntity.created(location).body(newBook);
     }
 
     @PutMapping("/{id}")
@@ -62,7 +67,9 @@ public class BookController {
         bookToUpdate.setAuthor(author);
         bookToUpdate.setPublisher(publisher);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(this.bookRepo.save(bookToUpdate));
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
+
+        return ResponseEntity.created(location).body(this.bookRepo.save(bookToUpdate));
     }
 
     @DeleteMapping("/{id}")
