@@ -1,7 +1,7 @@
-package com.booleanuk.api.controller;
+package com.booleanuk.api.Controller;
 
-import com.booleanuk.api.model.Author;
-import com.booleanuk.api.repository.AuthorRepository;
+import com.booleanuk.api.Model.Author;
+import com.booleanuk.api.Repository.AuthorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +25,7 @@ public class AuthorController {
     @GetMapping ("/{id}")
     public ResponseEntity<Author> getAuthorById(@PathVariable int id){
         Author author = null;
-        author = this.authorRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Department with this ID not found"));
+        author = this.authorRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Author with this ID not found"));
         return ResponseEntity.ok(author);
     }
 
