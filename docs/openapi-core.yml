@@ -86,6 +86,156 @@ paths:
               schema:
                 $ref: '#/components/schemas/Author'
                 required: true
+  /publishers:
+    post:
+      tags:
+        - publishers
+      summary: Publisher POST route
+      description: Description of a publisher POST route
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePublisher'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Publisher'
+    get:
+      tags:
+        - publishers
+      summary: Publisher GET route
+      description: Description of a publisher GET route
+      responses:
+        '200':
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AllPublishers'
+  /publishers/{id}:
+    put:
+      tags:
+        - publishers
+      summary: Publisher PUT route
+      description: Description of a publisher PUT route
+      parameters:
+        - name: id
+          in: path
+          description: The ID of the publisher to update
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePublisher'
+      responses:
+        '201':
+          description: "Created"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Publisher'
+    delete:
+      tags:
+        - publishers
+      summary: Publisher DELETE route
+      description: Deletes a publisher by id
+      parameters:
+        - name: id
+          in: path
+          description: The ID of the publisher to delete
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: "Ok"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Publisher'
+                required: true
+  /books:
+    post:
+      tags:
+        - books
+      summary: Book POST route
+      description: Description of a book POST route
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateBook'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+    get:
+      tags:
+        - books
+      summary: Book GET route
+      description: Description of a book GET route
+      responses:
+        '200':
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AllBooks'
+  /books/{id}:
+    put:
+      tags:
+        - books
+      summary: Book PUT route
+      description: Description of a book PUT route
+      parameters:
+        - name: id
+          in: path
+          description: The ID of the book to update
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateBook'
+      responses:
+        '201':
+          description: "Created"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+    delete:
+      tags:
+        - books
+      summary: Book DELETE route
+      description: Deletes a book by id
+      parameters:
+        - name: id
+          in: path
+          description: The ID of the book to delete
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: "Ok"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book '
+                required: true
 
 components:
   schemas:
@@ -106,6 +256,32 @@ components:
         alive:
           type: boolean
           example: true
+    CreatePublisher:
+      type: object
+      required: [ name, location]
+      properties:
+        name:
+          type: string
+          example: "Publisher Records"
+        location:
+          type: string
+          example: "123 Main st. London UK"
+    CreateBook:
+      type: object
+      required: [ title, genre, author_id, publisher_id ]
+      properties:
+        title:
+          type: string
+          example: "Lord of the rings"
+        genre:
+          type: string
+          example: "Fantasy"
+        author_id:
+          type: integer
+          example: 1
+        publisher_id:
+          type: int
+          example: 1
     Author:
       type: object
       properties:
@@ -125,6 +301,36 @@ components:
         alive:
           type: boolean
           example: true
+    Publisher:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: "Publisher Records"
+        location:
+          type: string
+          example: "123 Main st. London UK"
+    Book:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        title:
+          type: string
+          example: "Lord of the rings"
+        genre:
+          type: string
+          example: "Fantasy"
+        author_id:
+          type: integer
+          example: 1
+        publisher_id:
+          type: integer
+          example: 1
 #        createdAt:
 #          type: string
 #          format: DateTime
@@ -134,6 +340,14 @@ components:
       type: array
       items:
         $ref: '#/components/schemas/Author'
+    AllPublishers:
+      type: array
+      items:
+        $ref: '#/components/schemas/Publisher'
+    AllBooks:
+      type: array
+      items:
+        $ref: '#/components/schemas/Book'
 
 
 
