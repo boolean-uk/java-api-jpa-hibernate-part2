@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class BookViewDTO {
 
+    private int id;
+
     private String title;
 
     private String genre;
@@ -16,9 +18,5 @@ public class BookViewDTO {
     private AuthorDTO author;
 
     private PublisherDTO publisher;
-
-   /* public Book toBook(Author author, Publisher publisher){
-        return new Book(title, genre, author, publisher);
-    }*/
 
 }

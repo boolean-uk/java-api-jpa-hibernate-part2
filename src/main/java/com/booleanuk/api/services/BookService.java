@@ -32,7 +32,7 @@ public class BookService implements IBookService {
 
     @Override
     public BookViewDTO generateDTO(Book book) {
-        return new BookViewDTO(book.getTitle(), book.getGenre(),
+        return new BookViewDTO(book.getId(), book.getTitle(), book.getGenre(),
                 AuthorDTO.fromAuthor(book.getAuthor()), PublisherDTO.fromPublisher(book.getPublisher()));
     }
 
@@ -41,7 +41,7 @@ public class BookService implements IBookService {
         List<BookViewDTO> bookDTOS = new ArrayList<>();
 
         for (Book book : books) {
-            BookViewDTO bookListDTO = new BookViewDTO(book.getTitle(), book.getGenre(),
+            BookViewDTO bookListDTO = new BookViewDTO(book.getId(), book.getTitle(), book.getGenre(),
                     AuthorDTO.fromAuthor(book.getAuthor()), PublisherDTO.fromPublisher(book.getPublisher()));
 
             bookDTOS.add(bookListDTO);
