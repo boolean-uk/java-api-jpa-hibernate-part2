@@ -26,9 +26,7 @@ public class Author {
     private String email;
     @Column(name = "alive")
     private boolean alive;
-    @OneToMany(mappedBy = "author")
-    //@JsonManagedReference
-
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
     @JsonIgnoreProperties("author")
     private List<Book> books;
 }

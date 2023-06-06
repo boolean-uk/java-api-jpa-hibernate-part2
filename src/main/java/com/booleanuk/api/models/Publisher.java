@@ -23,8 +23,7 @@ public class Publisher {
     private String name;
     @Column(name = "location")
     private String location;
-    @OneToMany(mappedBy = "publisher")
-    //@JsonManagedReference
+    @OneToMany(mappedBy = "publisher", cascade = CascadeType.ALL)
     @JsonIgnoreProperties("publisher")
     private List<Book> books;
 }

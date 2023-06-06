@@ -256,7 +256,7 @@ components:
           example: hell
     CreateBook:
       type: object
-      required: [title, genre,Author,Publisher]
+      required: [title, genre,authorId,publisherId]
       properties:
         title:
           type: string
@@ -264,10 +264,14 @@ components:
         genre:
           type: string
           example: "book genre"
-        author:
-          type: object
-        publisher:
-          type: object
+
+        authorId:
+          type: int
+          example: 1
+        publisherId:
+          type: int
+          example: 1
+
     Book:
       type: object
       properties:
@@ -303,6 +307,8 @@ components:
         alive:
           type: boolean
           example: true
+        books:
+          type: array
     Publisher:
       type: object
       properties:
@@ -315,6 +321,8 @@ components:
         location:
           type: string
           example: hell
+        books:
+          type: array
     AllBooks:
       type: array
       items:
