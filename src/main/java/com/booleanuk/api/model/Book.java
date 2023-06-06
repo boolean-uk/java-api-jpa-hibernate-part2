@@ -21,7 +21,7 @@ public class Book {
 
     @ManyToOne
     @JoinColumn(name = "author_id", nullable = false)
-    @JsonIncludeProperties(value = {"first_name", "last_name", "email_address", "alive"})
+    @JsonIncludeProperties(value = {"firstName", "lastName", "email", "alive"})
     private Author author;
 
     @ManyToOne

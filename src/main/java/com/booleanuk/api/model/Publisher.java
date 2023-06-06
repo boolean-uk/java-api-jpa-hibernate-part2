@@ -29,6 +29,10 @@ public class Publisher {
         super();
     }
 
+    public Publisher(int id) {
+        this.id = id;
+    }
+
     public Publisher(String name, String location) {
         this.name = name;
         this.location = location;
