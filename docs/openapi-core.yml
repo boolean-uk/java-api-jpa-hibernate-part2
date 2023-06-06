@@ -5,95 +5,73 @@ info:
   version: 0.2.2
 
 servers:
-  - url: http://localhost:4000/book
+  - url: http://localhost:4000
 tags:
+  - name: authors
   - name: books
+  - name: publishers
 paths:
-  /books:
+  /authors:
     post:
       tags:
-        - books
-      summary: Book POST route
-      description: Description of an book POST route
+        - authors
+      summary: author POST route
+      description: Description of an author POST route
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Book'
+              $ref: '#/components/schemas/CreateAuthor'
       responses:
         201:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Book'
+                $ref: '#/components/schemas/Author'
     get:
       tags:
-        - books
-      summary: book GET route
-      description: Description of an books GET route
+        - authors
+      summary: Author GET route
+      description: Description of an author GET route
       responses:
         200:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Book/getAll'
-  /books/{id}:
+                $ref: '#/components/schemas/AllAuthors'
+  /authors/{id}:
     put:
       tags:
-        - books
-      summary: Book PUT route
-      description: Description of an books PUT route
+        - authors
+      summary: Author PUT route
+      description: Description of an author PUT route
       parameters:
         - name: id
           in: path
-          description: The ID of the example to update
+          description: The ID of the author to update
           required: true
           schema:
             type: integer
-        - name: title
-          in: path
-          description: The title of the example to update
-          required: true
-          schema:
-            type: String
-        - name: genre
-          in: path
-          description: The genre of the book to update
-          required: true
-          schema:
-            type: String
-        - name: author_id
-          in: path
-          description: The Author Id of the book to update
-          required: true
-          schema:
-            type: Integer
-        - name: publisher_id
-          in: path
-          description: The Publisher Id of the book to update
-          required: true
-          schema:
-            type: Integer
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Book/update'
+              $ref: '#/components/schemas/CreateAuthor'
       responses:
         201:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Book/update'
+                $ref: '#/components/schemas/Author'
     delete:
       tags:
-        - books
-      summary: Book DELETE route
-      description: Description of an book DELETE route
+        - authors
+      summary: Author DELETE route
+      description: Description of an author DELETE route
       parameters:
         - name: id
           in: path
-          description: The ID of the book to delete
+          description: The ID of the author to delete
           required: true
           schema:
             type: integer
@@ -102,48 +80,257 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Book/delete'
+                $ref: '#/components/schemas/Author'
 
+/publishers:
+  post:
+    tags:
+      - publishers
+    summary: Publisher POST route
+    description: Description of an publisher POST route
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreatePublisher'
+    responses:
+      201:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Publisher'
+  get:
+    tags:
+      - publishers
+    summary: Publisher GET route
+    description: Description of an publisher GET route
+    responses:
+      200:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AllPublishers'
+  /publishers/{id}:
+    put:
+      tags:
+        - publishers
+      summary: Publisher PUT route
+      description: Description of an publisher PUT route
+      parameters:
+        - name: id
+          in: path
+          description: The ID of the publisher to update
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePublisher'
+      responses:
+        201:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Publisher'
+    delete:
+      tags:
+        - publishers
+      summary: Publisher DELETE route
+      description: Description of an publisher DELETE route
+      parameters:
+        - name: id
+          in: path
+          description: The ID of the publisher to delete
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Publisher'
+
+
+    /books:
+      post:
+        tags:
+          - books
+        summary: Book POST route
+        description: Description of an book POST route
+        requestBody:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateBook'
+        responses:
+          201:
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Book'
+      get:
+        tags:
+          - books
+        summary: Book GET route
+        description: Description of an book GET route
+        responses:
+          200:
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/AllBooks'
+    /books/{id}:
+      put:
+        tags:
+          - books
+        summary: Book PUT route
+        description: Description of an book PUT route
+        parameters:
+          - name: id
+            in: path
+            description: The ID of the book to update
+            required: true
+            schema:
+              type: integer
+        requestBody:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateBook'
+        responses:
+          201:
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Book'
+      delete:
+        tags:
+          - books
+        summary: Book DELETE route
+        description: Description of an book DELETE route
+        parameters:
+          - name: id
+            in: path
+            description: The ID of the book to delete
+            required: true
+            schema:
+              type: integer
+        responses:
+          200:
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Book'
 components:
   schemas:
-    CreateBook:
+    CreateAuthor:
       type: object
-      required: [title,genre ,author_id , publisher_id]
+      required: [first_name, last_name, email, alive]
       properties:
-        title:
+        first_name:
           type: string
-          example: "100 years of Solitude"
-        genre:
+          example: "Matt"
+        last_ame:
           type: string
-          format: string
-          example: "magical realism"
-        author_id:
-          type: integer
-          format: integer
-          example: "1"
-        publisher_id:
-          type: integer
-          format: integer
-          example: "2"
+          example: "Bellamy"
+        email:
+          type: email
+          format: email
+          example: "example@example.com"
+        alive:
+          type: boolean
+          example: true
+
+    CreatePublisher:
+      type: object
+      required: [ name, location ]
+      properties:
+        name:
+          type: string
+          example: author
+        location:
+          type: string
+          example: hell
+      CreateBook:
+        type: object
+        required: [ title, genre,authorId,publisherId ]
+        properties:
+          title:
+            type: string
+            example: "book title"
+          genre:
+            type: string
+            example: "book genre"
+
+          authorId:
+            type: int
+            example: 1
+          publisherId:
+            type: int
+            example: 1
     Book:
       type: object
       properties:
+        id:
+          type: integer
+          example: 1
         title:
           type: string
-          example: "100 years of Solitude"
+          example: "book title"
         genre:
           type: string
-          format: string
-          example: "magical realism"
-        author_id:
+          example: "book genre"
+        Author:
+          type: object
+        Publisher:
+          type: object
+
+    Publisher:
+      type: object
+      properties:
+        id:
           type: integer
-          format: integer
-          example: "1"
-        publisher_id:
-          type: integer
-          format: integer
-          example: "2"
-    AllBooks:
+          example: 1
+        name:
+          type: string
+          example: author
+        location:
+          type: string
+          example: hell
+        books:
+          type: array
+      AllBooks:
+        type: array
+        items:
+          $ref: '#/components/schemas/Book'
+
+    AllPublishers:
       type: array
       items:
-        $ref: '#/components/schemas/Book/create'
+        $ref: '#/components/schemas/Publisher'
+    Author:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        first_name:
+          type: string
+          example: "Matt"
+        last_ame:
+          type: string
+          example: "Bellamy"
+        email:
+          type: email
+          format: email
+          example: "example@example.com"
+        alive:
+          type: boolean
+          example: true
+    AllAuthors:
+      type: array
+      items:
+        $ref: '#/components/schemas/Author'
