@@ -17,11 +17,15 @@ public class Book {
     @Column(name = "genre")
     private String genre;
 
-    @Column(name = "author_id")
-    private Integer author_id;
+    @ManyToOne
+    @JoinColumn(name = "author_id", nullable = false)
+    //@JsonBackReference
+    private Author author;
 
-    @Column(name = "publisher_id")
-    private Integer publisher_id;
+    @ManyToOne
+    @JoinColumn(name = "publisher_id", nullable = false)
+    //@JsonBackReference
+    private Publisher publisher;
 
 
     //constructors
@@ -29,12 +33,10 @@ public class Book {
         super();
     }
 
-    public Book(String title, String genre, Integer author_id, Integer publisher_id) {
+    public Book(String title, String genre) {
         super();
         this.title = title;
         this.genre = genre;
-        this.author_id = author_id;
-        this.publisher_id = publisher_id;
     }
 
     //getters and setters
@@ -63,19 +65,19 @@ public class Book {
         this.genre = genre;
     }
 
-    public Integer getAuthor_id() {
-        return author_id;
+    public Author getAuthor(Author author) {
+        return this.author;
     }
 
-    public void setAuthor_id(Integer author_id) {
-        this.author_id = author_id;
+    public void setAuthor(Author author) {
+        this.author = author;
     }
 
-    public Integer getPublisher_id() {
-        return publisher_id;
+    public Publisher getPublisher(Publisher publisher) {
+        return this.publisher;
     }
 
-    public void setPublisher_id(Integer publisher_id) {
-        this.publisher_id = publisher_id;
+    public void setPublisher(Publisher publisher) {
+        this.publisher = publisher;
     }
 }
