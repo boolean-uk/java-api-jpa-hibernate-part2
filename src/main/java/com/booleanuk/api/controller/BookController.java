@@ -50,6 +50,7 @@ public class BookController {
         Book createdBook = bookRepository.save(book);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdBook);
     }
+
     @PutMapping("/{id}")
     public ResponseEntity<Book> updateBook(@PathVariable int id, @RequestBody Book book) {
         Optional<Book> optionalBook = bookRepository.findById(id);

@@ -1,6 +1,10 @@
 package com.booleanuk.api.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "authors")
@@ -19,8 +23,17 @@ public class Author {
     @Column(name = "alive")
     private boolean isAlive;
 
+    @OneToMany(mappedBy = "author")
+    @JsonIgnoreProperties(value = {"author"})
+    private List<Book> books;
+
+
     public Author(){
         super();
+    }
+
+    public Author(int id) {
+        this.id = id;
     }
 
     public Author(String firstName, String lastName, String email, boolean isAlive) {
@@ -69,4 +82,8 @@ public class Author {
     public void setAlive(boolean alive) {
         isAlive = alive;
     }
+
+    public List<Book> getBooks() {return this.books;}
+
+    public void setBooks(List<Book> books) { this.books = books;}
 }

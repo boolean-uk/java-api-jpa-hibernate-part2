@@ -1,6 +1,10 @@
 package com.booleanuk.api.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "publishers")
@@ -15,6 +19,10 @@ public class Publisher {
     @Column(name = "location")
     private String location;
 
+    @OneToMany(mappedBy = "publisher")
+    @JsonIgnoreProperties(value = {"publisher"})
+    private List<Book> books;
+
     public Publisher(){
         super();
     }
@@ -22,6 +30,10 @@ public class Publisher {
     public Publisher(String name, String location) {
         this.name = name;
         this.location = location;
+    }
+
+    public Publisher(int id) {
+        this.id = id;
     }
 
     public int getId() {
@@ -47,4 +59,8 @@ public class Publisher {
     public void setLocation(String location) {
         this.location = location;
     }
+
+    public List<Book> getBooks() { return this.books; }
+
+    public void setBooks(List<Book> books) { this.books = books; }
 }

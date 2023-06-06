@@ -1,5 +1,6 @@
 package com.booleanuk.api.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 @Entity
@@ -16,10 +17,12 @@ public class Book {
     private String genre;
     @ManyToOne
     @JoinColumn(name = "author_id",nullable = false)
+    @JsonIgnoreProperties("books")
     private Author author;
 
     @ManyToOne
     @JoinColumn(name = "publisher_id",nullable = false)
+    @JsonIgnoreProperties("books")
     private Publisher publisher;
 
     public Book(){
