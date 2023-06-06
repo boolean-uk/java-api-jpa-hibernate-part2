@@ -13,7 +13,7 @@ public class Book {
     private String genre;
     @ManyToOne
     @JoinColumn (name="author_id",referencedColumnName = "id")
-    @JsonIgnoreProperties("books")
+    //@JsonIgnoreProperties("books")
     private Author author;
     @ManyToOne
     @JoinColumn (name="publisher_id",referencedColumnName = "id")

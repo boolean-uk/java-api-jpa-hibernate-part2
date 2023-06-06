@@ -18,8 +18,7 @@ public class Author {
     private String email;
     private boolean alive;
     @OneToMany(mappedBy = "author")
-    //@JsonIgnoreProperties("author")
-    //@JsonIgnoreProperties("id,author_id,publisher_id")
+    @JsonIgnoreProperties("author")
     private Set<Book> books;
 
     public Author() {
@@ -70,5 +69,13 @@ public class Author {
 
     public void setAlive(boolean alive) {
         this.alive = alive;
+    }
+
+    public Set<Book> getBooks() {
+        return books;
+    }
+
+    public void setBooks(Set<Book> books) {
+        this.books = books;
     }
 }

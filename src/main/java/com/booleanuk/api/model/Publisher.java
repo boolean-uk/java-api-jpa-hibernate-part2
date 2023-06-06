@@ -14,7 +14,7 @@ public class Publisher {
     private String name;
     private String location;
     @OneToMany(mappedBy = "publisher")
-    @JsonIgnoreProperties("publisher")
+    @JsonIgnoreProperties(value = {"publisher","author"})
     private Set<Book> books;
 
     public Publisher() {
@@ -47,5 +47,13 @@ public class Publisher {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public Set<Book> getBooks() {
+        return books;
+    }
+
+    public void setBooks(Set<Book> books) {
+        this.books = books;
     }
 }
