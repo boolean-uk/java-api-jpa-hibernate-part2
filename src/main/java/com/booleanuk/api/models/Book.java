@@ -17,17 +17,25 @@ public class Book {
 
     @ManyToOne
     @JoinColumn(name = "author_id")
-    private Author author_id;
+    private Author author;
     @ManyToOne
     @JoinColumn(name = "publisher_id")
-    private Publisher publisher_id;
+    private Publisher publisher;
 
     public Book(int book_id, String title, String genre, Author author, Publisher publisher) {
         this.book_id = book_id;
         this.title = title;
         this.genre = genre;
-        this.author_id = author;
-        this.publisher_id = publisher;
+        this.author = author;
+        this.publisher = publisher;
+    }
+
+    public int getBook_id() {
+        return book_id;
+    }
+
+    public void setBook_id(int book_id) {
+        this.book_id = book_id;
     }
 
     public String getTitle() {
@@ -46,19 +54,19 @@ public class Book {
         this.genre = genre;
     }
 
-    public Author getAuthor_id() {
-        return author_id;
+    public Author getAuthor() {
+        return author;
     }
 
-    public void setAuthor_id(Author author_id) {
-        this.author_id = author_id;
+    public void setAuthor(Author author) {
+        this.author = author;
     }
 
-    public Publisher getPublisher_id() {
-        return publisher_id;
+    public Publisher getPublisher() {
+        return publisher;
     }
 
-    public void setPublisher_id(Publisher publisher_id) {
-        this.publisher_id = publisher_id;
+    public void setPublisher(Publisher publisher) {
+        this.publisher = publisher;
     }
 }

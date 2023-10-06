@@ -36,8 +36,8 @@ public class BookController {
         Book bookToUpdate = this.repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Book Not Found"));
         bookToUpdate.setTitle(book.getTitle());
         bookToUpdate.setGenre(book.getGenre());
-        bookToUpdate.setAuthor_id(book.getAuthor_id());
-        bookToUpdate.setPublisher_id(book.getPublisher_id());
+        bookToUpdate.setAuthor(book.getAuthor());
+        bookToUpdate.setPublisher(book.getPublisher());
         this.repository.save(bookToUpdate);
         return ResponseEntity.ok(bookToUpdate);
     }

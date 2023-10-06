@@ -1,8 +1,11 @@
 package com.booleanuk.api.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 
 @NoArgsConstructor
@@ -21,7 +24,7 @@ public class Author {
     @Column(name = "alive")
     private boolean alive;
 
-    public Author(int author_id, String firstName, String lastName, String email, boolean alive) {
+    public Author(int author_id,String firstName, String lastName, String email, boolean alive) {
         this.author_id = author_id;
         this.firstName = firstName;
         this.lastName = lastName;
