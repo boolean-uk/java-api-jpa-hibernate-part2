@@ -38,3 +38,7 @@ out/
 
 ### Ignore application.yml file ###
 src/main/resources/application.yml
+
+###User Defined###
+flyway.conf
+application.yml
