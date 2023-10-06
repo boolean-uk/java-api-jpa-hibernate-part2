@@ -24,17 +24,21 @@ public class BookController {
     @Autowired
     private PublisherRepository publishers;
 
+    private void transferData(BookTDO sourceBook, Book destinationBook) {
+        destinationBook.setTitle(sourceBook.title());
+        destinationBook.setGenre(sourceBook.genre());
+        destinationBook.setAuthor(this.authors.findById(sourceBook.authorId()).orElse(null));
+        destinationBook.setPublisher(this.publishers.findById(sourceBook.publisherId()).orElse(null));
+    }
+
     @PostMapping
     public ResponseEntity<Book> createBook(@RequestBody BookTDO book) {
         Book bookToCreate = new Book();
-        bookToCreate.setTitle(book.title());
-        bookToCreate.setGenre(book.genre());
-        bookToCreate.setAuthor(this.authors.findById(book.authorId()).orElse(null));
-        bookToCreate.setPublisher(this.publishers.findById(book.publisherId()).orElse(null));
         try {
+            this.transferData(book, bookToCreate);
             bookToCreate = this.books.save(bookToCreate);
         } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Create failed. Check required fields." + e.getMessage());
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Create failed. Check required fields.");
         }
         return new ResponseEntity<>(bookToCreate, HttpStatus.CREATED);
     }
@@ -54,16 +58,13 @@ public class BookController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Book> updateBook(@PathVariable int id, @RequestBody Book book) {
+    public ResponseEntity<Book> updateBook(@PathVariable int id, @RequestBody BookTDO book) {
         Book bookToUpdate = this.books.findById(id).orElse(null);
         if (bookToUpdate == null){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Book with this id was not found.");
         }
         try {
-            bookToUpdate.setTitle(book.getTitle());
-            bookToUpdate.setGenre(book.getGenre());
-            bookToUpdate.setAuthor(book.getAuthor());
-            bookToUpdate.setPublisher(book.getPublisher());
+            this.transferData(book, bookToUpdate);
             bookToUpdate = this.books.save(bookToUpdate);
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Update failed. Check required fields.");
