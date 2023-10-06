@@ -1,5 +1,6 @@
 package com.booleanuk.api.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,6 +19,7 @@ public class Book {
     private String genre;
     @ManyToOne
     @JoinColumn(name = "authorId", referencedColumnName = "authorId", nullable = false)
+    @JsonIgnoreProperties({"books"})
     private Author author;
     @ManyToOne
     @JoinColumn(name = "publisherId", referencedColumnName = "publisherId", nullable = false)
