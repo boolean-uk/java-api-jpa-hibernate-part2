@@ -1,6 +1,7 @@
 package com.booleanuk.api.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import jakarta.persistence.*;
 
 @Entity
@@ -30,8 +31,7 @@ public class Book {
     public Book() {
     }
 
-    public Book(int bookId, String title, String genre, Author author, Publisher publisher) {
-        this.bookId = bookId;
+    public Book(String title, String genre, Author author, Publisher publisher) {
         this.title = title;
         this.genre = genre;
         this.author = author;

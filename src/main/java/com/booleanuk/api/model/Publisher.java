@@ -11,7 +11,7 @@ public class Publisher {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer publisheId;
+    private Integer publisherId;
 
     @Column(name = "name")
     private String name;
@@ -26,17 +26,21 @@ public class Publisher {
     public Publisher(){
     }
 
+    public Publisher(int publisherId){
+        this.publisherId = publisherId;
+    }
+
     public Publisher(String name, String location) {
         this.name = name;
         this.location = location;
     }
 
-    public Integer getPublisheId() {
-        return publisheId;
+    public Integer getPublisherId() {
+        return publisherId;
     }
 
-    public void setPublisheId(Integer publisheId) {
-        this.publisheId = publisheId;
+    public void setPublisherId(Integer publisherId) {
+        this.publisherId = publisherId;
     }
 
     public String getName() {

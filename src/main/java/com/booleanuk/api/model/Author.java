@@ -32,6 +32,10 @@ public class Author {
     public Author(){
     }
 
+    public Author(int authorId){
+        this.authorId = authorId;
+    }
+
     public Author(String firstName, String lastName, String email, boolean alive) {
         this.firstName = firstName;
         this.lastName = lastName;

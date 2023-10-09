@@ -1,7 +1,11 @@
 package com.booleanuk.api.controller;
 
+import com.booleanuk.api.model.Author;
 import com.booleanuk.api.model.Book;
+import com.booleanuk.api.model.Publisher;
+import com.booleanuk.api.repository.AuthorRepository;
 import com.booleanuk.api.repository.BookRepository;
+import com.booleanuk.api.repository.PublisherRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +21,12 @@ public class BookController {
     @Autowired
     private BookRepository bookRepository;
 
+    @Autowired
+    private AuthorRepository authorRepository;
+
+    @Autowired
+    private PublisherRepository publisherRepository;
+
     @GetMapping
     public List<Book> getAll() {
         return this.bookRepository.findAll();
@@ -31,16 +41,25 @@ public class BookController {
 
     @PostMapping
     public ResponseEntity<Book> create(@RequestBody Book book) {
-        return new ResponseEntity<>(this.bookRepository.save(book), HttpStatus.CREATED);
+        Author author = null;
+        Publisher publisher = null;
+        author = this.authorRepository.findById(book.getAuthor().getAuthorId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No author with this id found"));
+        publisher = this.publisherRepository.findById(book.getPublisher().getPublisherId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No publisher with this id found"));
+        book.setAuthor(author);
+        book.setPublisher(publisher);
+        Book createdBook = this.bookRepository.save(book);
+        return new ResponseEntity<Book>(createdBook, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Book> updateBook(@PathVariable int id, @RequestBody Book book) {
-        Book bookToUpdate = this.getById(id).getBody();
+        Book bookToUpdate = this.bookRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         bookToUpdate.setTitle(book.getTitle());
         bookToUpdate.setGenre(book.getGenre());
-        bookToUpdate.setAuthor(book.getAuthor());
-        bookToUpdate.setPublisher(book.getPublisher());
+        Author author = this.authorRepository.findById(book.getAuthor().getAuthorId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No author with this id found"));
+        bookToUpdate.setAuthor(author);
+        Publisher publisher = this.publisherRepository.findById(book.getPublisher().getPublisherId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No publisher with this id found"));
+        bookToUpdate.setPublisher(publisher);
         return new ResponseEntity<>(this.bookRepository.save(bookToUpdate), HttpStatus.CREATED);
     }
 
