@@ -2,8 +2,6 @@ package com.booleanuk.api.model;
 
 import jakarta.persistence.*;
 
-import java.util.Objects;
-
 @Entity
 @Table(name = "publishers")
 public class Publisher {
@@ -21,6 +19,10 @@ public class Publisher {
     public Publisher() {
 
     }
+    public Publisher(int id) {
+        this.id = id;
+    }
+
 
     public Publisher(String name, String location) {
         this.name = name;

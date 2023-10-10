@@ -2,6 +2,7 @@ package com.booleanuk.api.model;
 
 import jakarta.persistence.*;
 
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -22,6 +23,10 @@ public class Author {
     @Column(name = "alive")
     private Boolean alive;
 
+
+    @OneToMany(mappedBy = "author")
+    private List<Book> books;
+
     public Author() {
 
     }
@@ -31,6 +36,10 @@ public class Author {
         this.lastName = lastName;
         this.email = email;
         this.alive = alive;
+    }
+
+    public Author(int id) {
+        this.id = id;
     }
 
     public Integer getId() {
