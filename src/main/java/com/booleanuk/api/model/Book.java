@@ -17,31 +17,29 @@ public class Book {
     @Column(name = "genre")
     private String genre;
 
-    @Column(name = "author_id")
-    private int authorID;
-    @Column(name = "publisher_id")
-    private int publisherID;
+//    @Column(name = "author_id")
+//    private int authorID;
+//    @Column(name = "publisher_id")
+//    private int publisherID;
 
     public Book() {
 
     }
-//    @ManyToOne
-//    @JoinColumn(name = "publisher_id")
-//
-//    private Publisher publisher;
-//
-//    @ManyToOne
-//    @JoinColumn(name = "author_id")
-//
-//    private Author author;
+    @ManyToOne
+    @JoinColumn(name = "publisher_id")
+    private Publisher publisher;
+
+    @ManyToOne
+    @JoinColumn(name = "author_id")
+    private Author author;
 
 
 
-    public Book(String title, String genre, int authorID, int publisherID) {
+    public Book(String title, String genre, Author author, Publisher publisher) {
         this.title = title;
         this.genre = genre;
-        this.authorID = authorID;
-        this.publisherID = publisherID;
+        this.author = author;
+        this.publisher = publisher;
     }
 
     public Integer getId() {
@@ -68,19 +66,19 @@ public class Book {
         this.genre = genre;
     }
 
-    public int getAuthorID() {
-        return authorID;
+    public Publisher getPublisher() {
+        return publisher;
     }
 
-    public void setAuthorID(int authorID) {
-        this.authorID = authorID;
+    public void setPublisher(Publisher publisher) {
+        this.publisher = publisher;
     }
 
-    public int getPublisherID() {
-        return publisherID;
+    public Author getAuthor() {
+        return author;
     }
 
-    public void setPublisherID(int publisherID) {
-        this.publisherID = publisherID;
+    public void setAuthor(Author author) {
+        this.author = author;
     }
 }

@@ -31,7 +31,7 @@ public class BookController {
     }
 
     @GetMapping("/{id}")
-    public Book getAuthorById(@PathVariable int id) {
+    public Book getBookById(@PathVariable int id) {
         Book book = null;
         book = this.bookRepository.findById(id).orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "author was not found")
@@ -42,27 +42,27 @@ public class BookController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Book authorCreated(@RequestBody Book newBook) throws SQLException {
+    public Book bookCreated(@RequestBody Book newBook) throws SQLException {
         return this.bookRepository.save(newBook);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Book> updateAuthor(@PathVariable int id, @RequestBody Book book) {
+    public ResponseEntity<Book> updateBook(@PathVariable int id, @RequestBody Book book) {
         Book bookToUpdate = this.bookRepository.findById(id).orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Author was not found")
         );
 
         bookToUpdate.setTitle(book.getTitle());
         bookToUpdate.setGenre(book.getGenre());
-        bookToUpdate.setAuthorID(book.getAuthorID());
-        bookToUpdate.setPublisherID(book.getPublisherID());
+        bookToUpdate.setAuthor(book.getAuthor());
+        bookToUpdate.setPublisher(book.getPublisher());
 
         return new ResponseEntity<>(this.bookRepository.save(bookToUpdate), HttpStatus.CREATED);
     }
 
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Book> deleteAuthorById(@PathVariable int id) {
+    public ResponseEntity<Book> deleteBookById(@PathVariable int id) {
         Book bookToDelete = this.bookRepository.findById(id).orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Author was not found")
         );
