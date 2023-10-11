@@ -40,7 +40,7 @@ public class BookController {
     public Book getBookById(@PathVariable int id) {
         Book book = null;
         book = this.bookRepository.findById(id).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "author was not found")
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Book was not found")
         );
         return book;
 
@@ -64,7 +64,7 @@ public class BookController {
     @PutMapping("/{id}")
     public ResponseEntity<Book> updateBook(@PathVariable int id, @RequestBody Book book) {
         Book bookToUpdate = this.bookRepository.findById(id).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Author was not found")
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Book was not found")
         );
         Author author = this.authorRepository.findById(book.getAuthor().getId()).orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No author found")
@@ -87,7 +87,7 @@ public class BookController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Book> deleteBookById(@PathVariable int id) {
         Book bookToDelete = this.bookRepository.findById(id).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Author was not found")
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Book was not found")
         );
 
         bookRepository.delete(bookToDelete);
