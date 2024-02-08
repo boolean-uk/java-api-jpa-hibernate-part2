@@ -1,9 +1,13 @@
 package com.booleanuk.api.authors;
 
+import com.booleanuk.api.books.Book;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -27,10 +31,18 @@ public class Author {
     @Column
     private boolean alive;
 
+    @OneToMany(mappedBy = "author")
+    @JsonIgnoreProperties("author")
+    private List<Book> books;
+
     public Author(String firstName, String lastName, String email, boolean alive){
         setFirstName(firstName);
         setLastName(lastName);
         setEmail(email);
         setAlive(alive);
+    }
+
+    public Author(int id){
+        setId(id);
     }
 }

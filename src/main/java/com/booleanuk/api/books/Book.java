@@ -2,6 +2,7 @@ package com.booleanuk.api.books;
 
 import com.booleanuk.api.authors.Author;
 import com.booleanuk.api.publishers.Publisher;
+import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,10 +26,12 @@ public class Book {
 
     @ManyToOne
     @JoinColumn(name = "author_id", nullable = false)
+    @JsonIncludeProperties(value = {"firstName", "lastName"})
     private Author author;
 
     @ManyToOne
     @JoinColumn(name = "publisher_id", nullable = false)
+    @JsonIncludeProperties(value = {"name", "location"})
     private Publisher publisher;
 
     public Book(String title, String genre){
