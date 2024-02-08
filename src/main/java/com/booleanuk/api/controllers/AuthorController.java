@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -24,15 +25,30 @@ public class AuthorController {
     record AuthorDTO (String first_name, String last_name, String email, boolean alive) {}
 
     @PostMapping
-    public ResponseEntity<Author> create(@RequestBody AuthorDTO author) {
-        if (author.first_name == null || author.last_name == null || author.email == null) {
+    public ResponseEntity<Author> create(@RequestBody AuthorDTO authorDTO) {
+        if (authorDTO.first_name == null || authorDTO.last_name == null || authorDTO.email == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Bad request");
         }
-        return new ResponseEntity<>(this.repository.save(new Author(author.first_name, author.last_name, author.email, author.alive)), HttpStatus.CREATED);
+        Author author = new Author(authorDTO.first_name, authorDTO.last_name, authorDTO.email, authorDTO.alive);
+        this.repository.save(author);
+        author.setBooks(new ArrayList<>());
+        return new ResponseEntity<>(author, HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
     public Author getOne(@PathVariable int id) {
         return this.repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Author not found"));
+    }
+
+    @DeleteMapping("/{id}")
+    public Author delete(@PathVariable int id) {
+        Author author = this.getOne(id);
+        try {
+            this.repository.delete(author);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Author still references a book");
+        }
+        author.setBooks(new ArrayList<>());
+        return author;
     }
 }

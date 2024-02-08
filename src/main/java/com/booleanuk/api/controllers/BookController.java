@@ -52,4 +52,11 @@ public class BookController {
     public Book getOne(@PathVariable int id) {
         return this.repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Book not found"));
     }
+
+    @DeleteMapping("/{id}")
+    public Book delete(@PathVariable int id) {
+        Book book = this.getOne(id);
+        this.repository.delete(book);
+        return book;
+    }
 }

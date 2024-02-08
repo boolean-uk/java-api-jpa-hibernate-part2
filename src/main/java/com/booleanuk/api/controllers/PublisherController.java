@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -27,11 +28,25 @@ public class PublisherController {
         if (publisher.getName() == null | publisher.getLocation() == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Bad request");
         }
-        return new ResponseEntity<>(this.repository.save(publisher), HttpStatus.CREATED);
+        this.repository.save(publisher);
+        publisher.setBooks(new ArrayList<>());
+        return new ResponseEntity<>(publisher, HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
     public Publisher getOne(@PathVariable int id) {
         return this.repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Publisher not found"));
+    }
+
+    @DeleteMapping("/{id}")
+    public Publisher delete(@PathVariable int id) {
+        Publisher publisher = this.getOne(id);
+        try {
+            this.repository.delete(publisher);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Publisher still references a book");
+        }
+        publisher.setBooks(new ArrayList<>());
+        return publisher;
     }
 }
