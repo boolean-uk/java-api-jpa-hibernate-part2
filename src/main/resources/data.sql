@@ -6,7 +6,8 @@ INSERT INTO author (alive, email, first_name, last_name) VALUES
     (true, 'willgib77@gmail.com', 'William', 'Gibson'),
     (true, 'madelmill@hotmail.com', 'Madeline', 'Miller'),
     (true, 'hatrack@gmail.com', 'Orson', 'Scott Card'),
-    (true, 'jk.rowling1829@gmail.net', 'J.K.', 'Rowling');
+    (true, 'jk.rowling1829@gmail.net', 'J.K.', 'Rowling'),
+    (false, 'mail.inbox@agathacristie.org', 'Agatha', 'Christie');
 
 -- Insert publishers
 INSERT INTO publisher (location, name) VALUES
@@ -14,7 +15,8 @@ INSERT INTO publisher (location, name) VALUES
     ('London', 'HarperCollins'),
     ('London', 'Bloomsbury'),
     ('New York', 'Little, Brown and Company'),
-    ('Edinburgh', 'Canongate Books');
+    ('Edinburgh', 'Canongate Books'),
+    ('Oslo', 'Gyldendal');
 
 -- Insert books
 INSERT INTO book (author_id, publisher_id, genre, title) VALUES
@@ -23,6 +25,6 @@ INSERT INTO book (author_id, publisher_id, genre, title) VALUES
     (2, 3, 'Fantasy', 'The Hobbit'),
     (3, 1, 'Sci-Fi', 'Neuromancer'),
     (4, 4, 'Fantasy', 'Circe'),
-    (4, 4, 'Fantasy', 'The Midnight Library'),
+    (4, 5, 'Fantasy', 'The Midnight Library'),
     (5, 1, 'Sci-Fi', 'Ender''s Game'),
     (6, 3, 'Fantasy', 'Harry Potter');

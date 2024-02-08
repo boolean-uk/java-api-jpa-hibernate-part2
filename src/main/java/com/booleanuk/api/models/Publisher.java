@@ -1,7 +1,10 @@
 package com.booleanuk.api.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.List;
 
 @Entity
 @Getter
@@ -17,4 +20,9 @@ public class Publisher {
     private String name;
 
     private String location;
+
+    @ToString.Exclude
+    @OneToMany(mappedBy = "publisher")
+    @JsonIgnoreProperties(value = "publisher")
+    private List<Book> books;
 }
