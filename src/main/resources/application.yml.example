@@ -5,19 +5,20 @@ spring:
     password: <PASSWORD>
     hikari:
       maximum-pool-size: 3
-      minimum-idle: 3
+
   jpa:
+    show-sql: true
+    defer-datasource-initialization: true # Make sure hibernate runs before loading the data.sql file
     hibernate:
       ddl-auto: create-drop # Drop and create new database before and after running spring
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
-        format_sql: true
-    show-sql: true
-    defer-datasource-initialization: true # Make sure hibernate runs before loading the data.sql file
+
   sql:
     init:
       mode: always # Load initial data from the data.sql file
+
 
 server:
   port: 4000
