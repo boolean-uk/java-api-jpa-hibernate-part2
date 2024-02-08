@@ -39,6 +39,8 @@ public class BookController {
         return new ResponseEntity<>(repository.save(new Book(request.title, request.genre, request.author, request.publisher)), HttpStatus.CREATED);
     }
 
+    // haha funni
+
     @PutMapping("{id}")
     public ResponseEntity<Book> update(@PathVariable final Integer id, @RequestBody final Book book) {
         Book _targetBook = repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found."));
