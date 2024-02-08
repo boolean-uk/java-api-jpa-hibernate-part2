@@ -40,6 +40,20 @@ public class AuthorController {
         return this.repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Author not found"));
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<Author> update(@PathVariable int id, @RequestBody AuthorDTO authorDTO) {
+        if (authorDTO.first_name == null || authorDTO.last_name == null || authorDTO.email == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Bad request");
+        }
+        Author author = this.getOne(id);
+        author.setFirstName(authorDTO.first_name);
+        author.setLastName(authorDTO.last_name);
+        author.setEmail(authorDTO.email);
+        author.setAlive(authorDTO.alive);
+
+        return new ResponseEntity<>(this.repository.save(author), HttpStatus.CREATED);
+    }
+
     @DeleteMapping("/{id}")
     public Author delete(@PathVariable int id) {
         Author author = this.getOne(id);

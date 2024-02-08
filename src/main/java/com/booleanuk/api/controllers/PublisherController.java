@@ -38,6 +38,18 @@ public class PublisherController {
         return this.repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Publisher not found"));
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<Publisher> update(@PathVariable int id, @RequestBody Publisher publisherReq) {
+        if (publisherReq.getName() == null | publisherReq.getLocation() == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Bad request");
+        }
+        Publisher publisher = this.getOne(id);
+        publisher.setName(publisherReq.getName());
+        publisher.setLocation(publisherReq.getLocation());
+
+        return new ResponseEntity<>(this.repository.save(publisher), HttpStatus.CREATED);
+    }
+
     @DeleteMapping("/{id}")
     public Publisher delete(@PathVariable int id) {
         Publisher publisher = this.getOne(id);
