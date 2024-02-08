@@ -26,8 +26,8 @@ public class Author {
     @Column
     private boolean alive;
 
-    @OneToMany(mappedBy = "book")
-    @JsonIgnoreProperties("book")
+    @OneToMany(mappedBy = "author")
+    @JsonIgnoreProperties("author")
     private List<Book> books;
 
     public Author(String first_name, String last_name, String email, boolean alive) {

@@ -22,8 +22,8 @@ public class Publisher {
     @Column
     private String location;
 
-    @OneToMany(mappedBy = "book")
-    @JsonIgnoreProperties("book")
+    @OneToMany(mappedBy = "publisher")
+    @JsonIgnoreProperties("publisher")
     private List<Book> books;
 
     public Publisher(String name, String location) {
