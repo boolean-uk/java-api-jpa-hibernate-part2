@@ -41,7 +41,7 @@ public class PublisherController {
     public ResponseEntity<Publisher> deletePublisher(@PathVariable int id) {
         Publisher publisherToDelete = findPublisher(id);
         if(!publisherToDelete.getBooks().isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Could not delete the publisher because it has books attached to it.");
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not delete the publisher because it has books attached to it.");
         }
         publisherRepository.delete(publisherToDelete);
         return ResponseEntity.ok(publisherToDelete);

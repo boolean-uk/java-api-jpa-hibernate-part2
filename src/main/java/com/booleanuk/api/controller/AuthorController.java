@@ -41,7 +41,7 @@ public class AuthorController {
     public ResponseEntity<Author> deleteAuthor(@PathVariable int id) {
         Author authorToDelete = findAuthor(id);
         if(!authorToDelete.getBooks().isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Could not delete the author because it has books attached to it.");
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not delete the author because it has books attached to it.");
         }
         authorRepository.delete(authorToDelete);
         return ResponseEntity.ok(authorToDelete);
