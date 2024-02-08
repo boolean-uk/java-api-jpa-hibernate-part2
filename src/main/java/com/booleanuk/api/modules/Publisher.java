@@ -30,4 +30,8 @@ public class Publisher {
         this.name = name;
         this.location = location;
     }
+
+    public Publisher(int id){
+        this.id = id;
+    }
 }

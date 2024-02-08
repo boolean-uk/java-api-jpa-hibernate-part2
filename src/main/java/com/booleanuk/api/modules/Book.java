@@ -23,16 +23,17 @@ public class Book {
 
     @ManyToOne
     @JoinColumn(name = "author_id",nullable = false)
-    @JsonIncludeProperties(value = {"first_name","last_name"})
+    @JsonIgnoreProperties("books")
     private Author author;
 
     @ManyToOne
     @JoinColumn(name = "publisher_id",nullable = false)
-    @JsonIncludeProperties(value = {"name, location"})
+    @JsonIgnoreProperties("books")
     private Publisher publisher;
 
     public Book(String title, String genre) {
         this.title = title;
         this.genre = genre;
     }
+
 }

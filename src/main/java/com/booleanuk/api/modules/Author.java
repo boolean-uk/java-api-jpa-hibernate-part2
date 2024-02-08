@@ -36,4 +36,8 @@ public class Author {
         this.email = email;
         this.alive = alive;
     }
+
+    public Author(int id){
+        this.id = id;
+    }
 }
