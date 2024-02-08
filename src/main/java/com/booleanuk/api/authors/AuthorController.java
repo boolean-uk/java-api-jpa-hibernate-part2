@@ -28,7 +28,7 @@ public class AuthorController {
     public ResponseEntity<Author> getOne(@PathVariable int id) {
         Author author = this.authorRepository
                 .findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Author not found"));
 
         return new ResponseEntity<>(author, HttpStatus.OK);
     }
@@ -44,7 +44,7 @@ public class AuthorController {
     public ResponseEntity<AuthorDTO> updateOne(@PathVariable int id, @Valid @RequestBody Author author) {
         Author authorToUpdate = this.authorRepository
                 .findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No author found"));
 
         authorToUpdate.setFirstName(author.getFirstName());
         authorToUpdate.setLastName(author.getLastName());
@@ -60,13 +60,13 @@ public class AuthorController {
     public ResponseEntity<AuthorDTO> deleteOne(@PathVariable int id){
         Author author = this.authorRepository
                 .findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No author found"));
 
         try{
             this.authorRepository.delete(author);
         }
         catch (Exception e){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Author have books");
         }
         return new ResponseEntity<>(modelMapper.map(author, AuthorDTO.class), HttpStatus.OK);
     }

@@ -34,7 +34,7 @@ public class BookController {
         return new ResponseEntity<>(
                 this.bookRepository
                         .findById(id)
-                        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND)),
+                        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Book not found")),
                 HttpStatus.OK);
 
     }

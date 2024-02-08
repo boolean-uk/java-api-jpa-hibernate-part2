@@ -28,7 +28,7 @@ public class PublisherController {
     public ResponseEntity<Publisher> getOne(@PathVariable int id) {
         Publisher publisher = this.publisherRepository
                 .findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No publisher found"));
 
         return new ResponseEntity<>(publisher, HttpStatus.OK);
     }
@@ -44,7 +44,7 @@ public class PublisherController {
     public ResponseEntity<PublisherDTO> updateOne(@PathVariable int id, @Valid @RequestBody Publisher publisher) {
         Publisher publisherToUpdate = this.publisherRepository
                 .findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No publisher found"));
 
         publisherToUpdate.setName(publisher.getName());
         publisherToUpdate.setLocation(publisher.getLocation());
@@ -58,13 +58,13 @@ public class PublisherController {
     public ResponseEntity<PublisherDTO> deleteOne(@PathVariable int id){
         Publisher publisher = this.publisherRepository
                 .findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No publisher found"));
 
         try{
             this.publisherRepository.delete(publisher);
         }
         catch (Exception e){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Publisher has books connected to it");
         }
         return new ResponseEntity<>(modelMapper.map(publisher, PublisherDTO.class), HttpStatus.OK);
     }
