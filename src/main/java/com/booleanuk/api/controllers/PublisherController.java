@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -29,7 +30,9 @@ public class PublisherController {
 
     @PostMapping
     public ResponseEntity<Publisher> addPublisher(@RequestBody Publisher publisher){
-        return new ResponseEntity<Publisher>(this.publisherRepository.save(publisher),
+        Publisher createPublisher = this.publisherRepository.save(publisher);
+        createPublisher.setBooks(new ArrayList<>());
+        return new ResponseEntity<Publisher>(createPublisher,
                 HttpStatus.CREATED);
     }
 
@@ -46,6 +49,7 @@ public class PublisherController {
     public ResponseEntity<Publisher> deletePublisher(@PathVariable int id){
         Publisher deletePublisher = findOnePublisher(id);
         this.publisherRepository.delete(deletePublisher);
+        deletePublisher.setBooks(new ArrayList<>());
         return ResponseEntity.ok(deletePublisher);
     }
 

@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -29,7 +30,8 @@ public class AuthorController {
 
     @PostMapping
     public ResponseEntity<Author> addAuthor(@RequestBody Author author){
-        return new ResponseEntity<Author>(this.authorRepository.save(author),
+        Author createAuthor = this.authorRepository.save(author);
+        return new ResponseEntity<Author>(createAuthor,
                 HttpStatus.CREATED);
     }
 
@@ -48,6 +50,7 @@ public class AuthorController {
     public ResponseEntity<Author> deleteAuthor(@PathVariable int id){
         Author deleteAuthor = getAnAuthor(id);
         this.authorRepository.delete(deleteAuthor);
+        deleteAuthor.setBooks(new ArrayList<>());
         return ResponseEntity.ok(deleteAuthor);
     }
 
