@@ -46,7 +46,7 @@ The API is specified [here](https://boolean-uk.github.io/java-api-jpa-hibernate-
 All of the endpoints exist but references to the other tables are not necessarily implemented/working.
 
 ## Extension Criteria
-As well as the endpoints existing, references to other tables are correctly working (ie if I view an author I can see details of their books etc).
+As well as the endpoints existing, references to other tables are correctly working (ie if I view an publisher I can see details of their books etc).
 
 
 
