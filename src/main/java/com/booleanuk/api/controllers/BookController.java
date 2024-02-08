@@ -1,5 +1,6 @@
 package com.booleanuk.api.controllers;
 
+import com.booleanuk.api.model.Author;
 import com.booleanuk.api.model.Book;
 import com.booleanuk.api.repositories.AuthorRepository;
 import com.booleanuk.api.repositories.BookRepository;
@@ -45,5 +46,10 @@ public class BookController {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Publisher not found")));
 
         return new ResponseEntity<>(this.repository.save(book), HttpStatus.CREATED);
+    }
+
+    @GetMapping("/{id}")
+    public Book getOne(@PathVariable int id) {
+        return this.repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Book not found"));
     }
 }

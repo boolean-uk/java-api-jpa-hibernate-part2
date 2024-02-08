@@ -1,5 +1,6 @@
 package com.booleanuk.api.controllers;
 
+import com.booleanuk.api.model.Author;
 import com.booleanuk.api.model.Publisher;
 import com.booleanuk.api.repositories.PublisherRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,5 +28,10 @@ public class PublisherController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Bad request");
         }
         return new ResponseEntity<>(this.repository.save(publisher), HttpStatus.CREATED);
+    }
+
+    @GetMapping("/{id}")
+    public Publisher getOne(@PathVariable int id) {
+        return this.repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Publisher not found"));
     }
 }

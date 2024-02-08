@@ -30,4 +30,9 @@ public class AuthorController {
         }
         return new ResponseEntity<>(this.repository.save(new Author(author.first_name, author.last_name, author.email, author.alive)), HttpStatus.CREATED);
     }
+
+    @GetMapping("/{id}")
+    public Author getOne(@PathVariable int id) {
+        return this.repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Author not found"));
+    }
 }
