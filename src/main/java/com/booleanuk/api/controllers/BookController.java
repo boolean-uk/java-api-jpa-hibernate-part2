@@ -32,14 +32,15 @@ public class BookController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Book add(@RequestBody BookRequest book) {
-        checkIfValidObject(book);
+    public Book add(@RequestBody BookRequest request) {
+        // Check if request is a valid book
+        checkIfValidObject(request);
         // Get author and publisher from ids
-        Author author = this.authorRepository.findById(book.getAuthorId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        Publisher publisher = this.publisherRepository.findById(book.getPublisherId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        // Create new book
-        Book bookToAdd = new Book(book.getTitle(), book.getGenre(), author, publisher);
-
+        Author author = this.authorRepository.findById(request.getAuthorId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Could not find Author[id=" + request.getAuthorId() + "]"));
+        Publisher publisher = this.publisherRepository.findById(request.getPublisherId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Could not find Publisher[id=" + request.getPublisherId() + "]"));
+        // Create new book object
+        Book bookToAdd = new Book(request.getTitle(), request.getGenre(), author, publisher);
+        // Add object to db
         return this.bookRepository.save(bookToAdd);
     }
 
@@ -55,15 +56,15 @@ public class BookController {
 
     @PutMapping("{id}")
     @ResponseStatus(HttpStatus.CREATED)
-    public Book updateById(@PathVariable int id, @RequestBody BookRequest book) {
-        checkIfValidObject(book);
+    public Book updateById(@PathVariable int id, @RequestBody BookRequest request) {
+        checkIfValidObject(request);
 
         Book bookToUpdate = this.bookRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        Author author = this.authorRepository.findById(book.getAuthorId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        Publisher publisher = this.publisherRepository.findById(book.getPublisherId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        Author author = this.authorRepository.findById(request.getAuthorId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Could not find Author[id=" + request.getAuthorId() + "]"));
+        Publisher publisher = this.publisherRepository.findById(request.getPublisherId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Could not find Publisher[id=" + request.getPublisherId() + "]"));
 
-        bookToUpdate.setTitle(book.getTitle());
-        bookToUpdate.setGenre(book.getGenre());
+        bookToUpdate.setTitle(request.getTitle());
+        bookToUpdate.setGenre(request.getGenre());
         bookToUpdate.setAuthor(author);
         bookToUpdate.setPublisher(publisher);
 

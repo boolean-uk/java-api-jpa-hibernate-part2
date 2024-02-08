@@ -26,7 +26,10 @@ public class PublisherController {
     }
 
     @GetMapping
-    public List<Publisher> getAll() {
+    public List<Publisher> getAll(@RequestParam String location) {
+        if (location != null && !location.isBlank()) {
+            return this.repository.findAllByLocation(location);
+        }
         return this.repository.findAll();
     }
 

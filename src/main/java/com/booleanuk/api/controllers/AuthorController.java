@@ -1,6 +1,7 @@
 package com.booleanuk.api.controllers;
 
 import com.booleanuk.api.models.Author;
+import com.booleanuk.api.models.Book;
 import com.booleanuk.api.repositories.AuthorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -59,6 +60,11 @@ public class AuthorController {
         return authorToDelete;
     }
 
+    @GetMapping("{id}/books")
+    public List<Book> getBooksByAuthorId(@PathVariable int id) {
+        return this.repository.findAllBooks(id);
+    }
+
     private void checkIfValidObject(Author author) {
         if (Stream.of(author.getFirstName(), author.getLastName(), author.getEmail(), author.getAlive())
                 .anyMatch(Objects::isNull)) {
@@ -68,5 +74,6 @@ public class AuthorController {
                 .anyMatch(String::isBlank)) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Could not create object. Required fields are empty.");
         }
+        // TODO Validate email, etcetc
     }
 }
