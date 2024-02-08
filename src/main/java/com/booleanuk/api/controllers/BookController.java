@@ -1,7 +1,11 @@
 package com.booleanuk.api.controllers;
 
+import com.booleanuk.api.models.Author;
 import com.booleanuk.api.models.Book;
+import com.booleanuk.api.models.Publisher;
+import com.booleanuk.api.repositories.AuthorRepository;
 import com.booleanuk.api.repositories.BookRepository;
+import com.booleanuk.api.repositories.PublisherRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +19,12 @@ import java.util.List;
 public class BookController {
     @Autowired
     private BookRepository bookRepository;
+
+    @Autowired
+    private AuthorRepository authorRepository;
+
+    @Autowired
+    private PublisherRepository publisherRepository;
 
     @GetMapping
     public List<Book> getAllBooks() {
@@ -40,6 +50,21 @@ public class BookController {
                     HttpStatus.NOT_FOUND,
                     "No books with that id were found");
 
+        Author tempAuthor = this.authorRepository.findById(book.getAuthor().getId())
+                .orElseThrow(
+                        () -> new ResponseStatusException(
+                                HttpStatus.NOT_FOUND,
+                                "Invalid author id!")
+                );
+        Publisher tempPublisher = this.publisherRepository.findById(book.getPublisher().getId())
+                .orElseThrow(
+                        () -> new ResponseStatusException(
+                                HttpStatus.NOT_FOUND,
+                                "Invalid publisher id!")
+                );
+        book.setPublisher(tempPublisher);
+        book.setAuthor(tempAuthor);
+
         return new ResponseEntity<>(
                 this.bookRepository.save(book),
                 HttpStatus.CREATED
@@ -62,6 +87,21 @@ public class BookController {
                         )
                 );
 
+        Author tempAuthor = this.authorRepository.findById(book.getAuthor().getId())
+                .orElseThrow(
+                        () -> new ResponseStatusException(
+                                HttpStatus.NOT_FOUND,
+                                "Invalid author id!")
+                );
+        Publisher tempPublisher = this.publisherRepository.findById(book.getPublisher().getId())
+                .orElseThrow(
+                        () -> new ResponseStatusException(
+                                HttpStatus.NOT_FOUND,
+                                "Invalid publisher id!")
+                );
+        book.setPublisher(tempPublisher);
+        book.setAuthor(tempAuthor);
+
         bookToUpdate.setTitle(book.getTitle());
         bookToUpdate.setGenre(book.getGenre());
         bookToUpdate.setAuthor(book.getAuthor());
@@ -74,10 +114,9 @@ public class BookController {
     public ResponseEntity<Book> deleteOneBook(@PathVariable int id) {
         Book bookToDelete = this.bookRepository.findById(id)
                 .orElseThrow(
-                        () ->
-                                new ResponseStatusException(
-                                        HttpStatus.NOT_FOUND,
-                                        "No books with that id were found")
+                        () -> new ResponseStatusException(
+                                HttpStatus.NOT_FOUND,
+                                "No books with that id were found")
                 );
 
         this.bookRepository.delete(bookToDelete);
