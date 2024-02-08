@@ -24,10 +24,12 @@ public class Book {
 
     @ManyToOne
     @JoinColumn(name = "author_id", nullable = false)
+    @JsonIncludeProperties(value = {"firstName", "lastName", "email", "alive"})
     private Author author;
 
     @ManyToOne
     @JoinColumn(name = "publisher_id", nullable = false)
+    @JsonIncludeProperties(value = {"name", "location"})
     private Publisher publisher;
 
     public Book(String title, String genre) {

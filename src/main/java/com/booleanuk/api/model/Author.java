@@ -31,6 +31,7 @@ public class Author {
     private boolean alive;
 
     @OneToMany(mappedBy = "author")
+    @JsonIncludeProperties(value = {"title", "genre"})
     private List<Book> books;
 
     public Author(String firstName, String lastName, String email, boolean alive) {
