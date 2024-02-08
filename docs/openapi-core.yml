@@ -403,10 +403,10 @@ components:
       type: object
       required: [first_name, last_name, email, alive]
       properties:
-        first_name:
+        firstName:
           type: string
           example: "Isaac"
-        last_name:
+        lastName:
           type: string
           example: "Asimov"
         email:
@@ -421,10 +421,10 @@ components:
         id:
           type: integer
           example: 1
-        first_name:
+        firstName:
           type: string
           example: "Isaac"
-        last_name:
+        lastName:
           type: string
           example: "Asimov"
         email:
@@ -473,10 +473,10 @@ components:
         genre:
           type: string
           example: "Science Fiction"
-        author_id:
+        authorId:
           type: integer
           example: 1
-        publisher_id:
+        publisherId:
           type: integer
           example: 1
     Book:
@@ -491,10 +491,10 @@ components:
         genre:
           type: string
           example: "Science Fiction"
-        author_id:
+        authorId:
           type: integer
           example: 1
-        publisher_id:
+        publisherId:
           type: integer
           example: 1
     AllBooks:
