@@ -1,6 +1,7 @@
 package com.booleanuk.api.controller;
 
 import com.booleanuk.api.model.Author;
+import com.booleanuk.api.model.Book;
 import com.booleanuk.api.repository.AuthorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -8,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -30,13 +32,16 @@ public class AuthorController {
     @PostMapping
     public ResponseEntity<Author> createAuthor(@RequestBody Author author) {
         this.checkHasRequiredValues(author);
-        return new ResponseEntity<>(this.authorRepository.save(author), HttpStatus.CREATED);
+        Author createdAuthor = this.authorRepository.save(author);
+        createdAuthor.setBooks(new ArrayList<Book>());
+        return new ResponseEntity<>(createdAuthor, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Author> deleteAuthor(@PathVariable int id) {
         Author authorToDelete = this.getAuthor(id);
         this.authorRepository.delete(authorToDelete);
+        authorToDelete.setBooks(new ArrayList<Book>());
         return ResponseEntity.ok(authorToDelete);
     }
 
@@ -48,6 +53,7 @@ public class AuthorController {
         authorToUpdate.setLast_name(author.getLast_name());
         authorToUpdate.setEmail(author.getEmail());
         authorToUpdate.setAlive(author.isAlive());
+        authorToUpdate.setBooks(new ArrayList<Book>());
         return new ResponseEntity<>(this.authorRepository.save(authorToUpdate), HttpStatus.CREATED);
     }
 

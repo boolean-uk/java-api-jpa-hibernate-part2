@@ -1,5 +1,6 @@
 package com.booleanuk.api.controller;
 
+import com.booleanuk.api.model.Book;
 import com.booleanuk.api.model.Publisher;
 import com.booleanuk.api.repository.PublisherRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -30,13 +32,16 @@ public class PublisherController {
     @PostMapping
     public ResponseEntity<Publisher> createPublisher(@RequestBody Publisher publisher) {
         this.checkHasRequiredValues(publisher);
-        return new ResponseEntity<>(this.publisherRepository.save(publisher), HttpStatus.CREATED);
+        Publisher createdPublisher = this.publisherRepository.save(publisher);
+        createdPublisher.setBooks(new ArrayList<Book>());
+        return new ResponseEntity<>(createdPublisher, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Publisher> deletePublisher(@PathVariable int id) {
         Publisher publisherToDelete = this.getPublisher(id);
         this.publisherRepository.delete(publisherToDelete);
+        publisherToDelete.setBooks(new ArrayList<Book>());
         return ResponseEntity.ok(publisherToDelete);
     }
 
@@ -46,6 +51,7 @@ public class PublisherController {
         Publisher publisherToUpdate = this.getPublisher(id);
         publisherToUpdate.setName(publisher.getName());
         publisherToUpdate.setLocation(publisher.getLocation());
+        publisherToUpdate.setBooks(new ArrayList<Book>());
         return new ResponseEntity<>(this.publisherRepository.save(publisherToUpdate), HttpStatus.CREATED);
     }
 
