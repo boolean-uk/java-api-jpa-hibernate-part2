@@ -2,16 +2,27 @@ package com.booleanuk.api.model;
 
 import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+import java.util.Optional;
+
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
-@Table(name="books")
+@Table (name = "books")
 public class Book {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column(name = "title")
+
+    @Column
     private String title;
-    @Column(name = "genre")
+
+    @Column
     private String genre;
 
     @ManyToOne
@@ -24,52 +35,13 @@ public class Book {
     @JsonIncludeProperties(value = {"name", "location"})
     private Publisher publisher;
 
-    public Book(){
-        super();
-    }
+
+
 
     public Book(String title, String genre) {
         this.title = title;
         this.genre = genre;
     }
 
-    public int getId() {
-        return id;
-    }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getGenre() {
-        return genre;
-    }
-
-    public void setGenre(String genre) {
-        this.genre = genre;
-    }
-
-    public Author getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(Author author) {
-        this.author = author;
-    }
-
-    public Publisher getPublisher() {
-        return publisher;
-    }
-
-    public void setPublisher(Publisher publisher) {
-        this.publisher = publisher;
-    }
 }

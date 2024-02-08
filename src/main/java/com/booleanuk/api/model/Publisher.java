@@ -1,62 +1,40 @@
 package com.booleanuk.api.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import java.util.ArrayList;
+import java.util.List;
 
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "publishers")
 public class Publisher {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int Id;
+    private int id;
 
-    @Column(name = "name")
+    @Column
     private String name;
 
-    @Column(name = "location")
+    @Column
     private String location;
 
     @OneToMany(mappedBy = "publisher")
-    @JsonIncludeProperties("publisher")
-    private ArrayList<Book> books;
+    @JsonIncludeProperties(value = {"title", "genre"})
+    private List<Book> books;
 
-    public Publisher(){
-        super();
-    }
-
-    public Publisher(int id) {
-        Id = id;
-    }
 
     public Publisher(String name, String location) {
         this.name = name;
         this.location = location;
     }
 
-    public int getId() {
-        return Id;
-    }
 
-    public void setId(int id) {
-        Id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
 }

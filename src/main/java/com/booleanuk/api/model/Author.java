@@ -2,39 +2,38 @@ package com.booleanuk.api.model;
 
 import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import java.util.ArrayList;
+import java.util.List;
 
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "authors")
 public class Author {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int Id;
+    private int id;
 
-    @Column(name = "firstName")
+    @Column(name = "first_name")
     private String firstName;
 
-    @Column(name = "lastName")
+    @Column(name = "last_name")
     private String lastName;
 
-    @Column(name = "email")
+    @Column
     private String email;
 
-    @Column(name = "alive")
+    @Column
     private boolean alive;
 
     @OneToMany(mappedBy = "author")
-    @JsonIncludeProperties("author")
-    private ArrayList<Book> books;
-
-    public Author(){
-        super();
-    }
-
-    public Author(int id) {
-        Id = id;
-    }
+    @JsonIncludeProperties(value = {"title", "genre"})
+    private List<Book> books;
 
     public Author(String firstName, String lastName, String email, boolean alive) {
         this.firstName = firstName;
@@ -43,43 +42,5 @@ public class Author {
         this.alive = alive;
     }
 
-    public int getId() {
-        return Id;
-    }
 
-    public void setId(int id) {
-        Id = id;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public boolean isAlive() {
-        return alive;
-    }
-
-    public void setAlive(boolean alive) {
-        this.alive = alive;
-    }
 }
