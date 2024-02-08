@@ -17,4 +17,11 @@ public class AuthorController {
     public List<Author> getAll() {
         return this.repository.findAll();
     }
+
+    record AuthorDTO (String first_name, String last_name, String email, boolean alive) {}
+
+    @PostMapping
+    public Author create(@RequestBody AuthorDTO author) {
+        return this.repository.save(new Author(author.first_name, author.last_name, author.email, author.alive));
+    }
 }
