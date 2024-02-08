@@ -401,12 +401,12 @@ components:
   schemas:
     CreateAuthor:
       type: object
-      required: [first_name, last_name, email, alive]
+      required: [firstName, lastName, email, alive]
       properties:
-        first_name:
+        firstName:
           type: string
           example: "Isaac"
-        last_name:
+        lastName:
           type: string
           example: "Asimov"
         email:
@@ -421,10 +421,10 @@ components:
         id:
           type: integer
           example: 1
-        first_name:
+        firstName:
           type: string
           example: "Isaac"
-        last_name:
+        lastName:
           type: string
           example: "Asimov"
         email:
