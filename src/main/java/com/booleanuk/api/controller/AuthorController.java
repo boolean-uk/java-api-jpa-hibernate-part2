@@ -23,6 +23,11 @@ public class AuthorController {
     public List<Author> getAll(){
         return this.authorRepository.findAll();
     }
+
+    @PostMapping
+    public ResponseEntity<Author> createEmployee(@RequestBody Author employee){
+        return new ResponseEntity<Author>(this.authorRepository.save(employee), HttpStatus.CREATED) ;
+    }
     @GetMapping("/{id}")
     public ResponseEntity<Author> getById(@PathVariable int id){
         Author employee = this.authorRepository
