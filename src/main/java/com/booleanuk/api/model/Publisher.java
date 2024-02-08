@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -21,6 +23,9 @@ public class Publisher {
 
     @Column
     private String location;
+
+    @OneToMany(mappedBy = "publisher")
+    private List<Book> books;
 
     public Publisher(String name, String location) {
         this.name = name;
