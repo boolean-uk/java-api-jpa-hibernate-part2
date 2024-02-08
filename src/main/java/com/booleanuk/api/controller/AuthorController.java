@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -20,13 +21,16 @@ public class AuthorController {
     private AuthorRepository repository;
 
     @GetMapping
-    public List<Author> getALlAuthorss() {
+    public List<Author> getALlAuthors() {
         return this.repository.findAll();
     }
 
     @PostMapping
     public ResponseEntity<Author> createAuthor(@RequestBody Author author) {
-        return new ResponseEntity<>(this.repository.save(author), HttpStatus.CREATED);
+        areAuthorValid(author);
+        Author createdAuthor = this.repository.save(author);
+        createdAuthor.setBooks(new ArrayList<>());
+        return new ResponseEntity<>(createdAuthor, HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
@@ -36,13 +40,15 @@ public class AuthorController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Author> deleteAuthor(@PathVariable int id) {
-        Author author = this.getAAuthor(id);
-        this.repository.delete(author);
-        return ResponseEntity.ok(author);
+        Author authorToDelete = this.getAAuthor(id);
+        this.repository.delete(authorToDelete);
+        authorToDelete.setBooks(new ArrayList<>());
+        return ResponseEntity.ok(authorToDelete);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Author> updateAuthor(@PathVariable int id, @RequestBody Author author) {
+        areAuthorValid(author);
         Author authorToUpdate = this.getAAuthor(id);
         authorToUpdate.setFirst_name(author.getFirst_name());
         authorToUpdate.setLast_name(author.getLast_name());
@@ -52,9 +58,15 @@ public class AuthorController {
         return new ResponseEntity<>(this.repository.save(authorToUpdate), HttpStatus.CREATED);
     }
 
+    private void areAuthorValid(Author author) {
+        if(author.getEmail() == null || author.getLast_name() == null || author.getFirst_name() == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Could not update the author, please check all required fields are correct.");
+        }
+    }
+
     private Author getAAuthor(int id) {
         return this.repository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No authors with that id were found"));
     }
 
 

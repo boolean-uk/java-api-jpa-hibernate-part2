@@ -38,6 +38,7 @@ public class BookController {
 
     @PostMapping
     public ResponseEntity<Book> createBook(@RequestBody Book book) {
+        areBookValid(book);
 
         Book newBook = new Book(book.getTitle(), book.getGenre());
         Author tempAuthor = this.authorRepository.findById(book.getAuthor().getId())
@@ -65,6 +66,7 @@ public class BookController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Book> updateBooks(@PathVariable int id, @RequestBody Book book) {
+        areBookValid(book);
         Book bookToUpdate = this.getABook(id);
         bookToUpdate.setTitle(book.getTitle());
         bookToUpdate.setGenre(book.getGenre());
@@ -75,9 +77,13 @@ public class BookController {
 
     private Book getABook(int id) {
         return this.repository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No books with that id were found"));
     }
 
-
+    private void areBookValid(Book book) {
+        if(book.getAuthor() == null || book.getPublisher() == null || book.getTitle() == null || book.getGenre() == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Please check all required fields are correct.");
+        }
+    }
 
 }
