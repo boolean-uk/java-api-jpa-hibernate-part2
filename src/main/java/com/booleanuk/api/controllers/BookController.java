@@ -118,7 +118,6 @@ public class BookController {
                                 HttpStatus.NOT_FOUND,
                                 "No books with that id were found")
                 );
-
         this.bookRepository.delete(bookToDelete);
         return ResponseEntity.ok(bookToDelete);
     }

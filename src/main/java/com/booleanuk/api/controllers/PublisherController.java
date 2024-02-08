@@ -1,5 +1,6 @@
 package com.booleanuk.api.controllers;
 
+import com.booleanuk.api.models.Book;
 import com.booleanuk.api.models.Publisher;
 import com.booleanuk.api.repositories.PublisherRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -72,6 +74,7 @@ public class PublisherController {
                                 "No publishers with that id were found")
                 );
         this.publisherRepository.delete(publisherToDelete);
+        publisherToDelete.setBooks(new ArrayList<Book>());
         return ResponseEntity.ok(publisherToDelete);
     }
 }

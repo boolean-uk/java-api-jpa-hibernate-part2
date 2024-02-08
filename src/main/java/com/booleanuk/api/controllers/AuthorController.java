@@ -1,6 +1,7 @@
 package com.booleanuk.api.controllers;
 
 import com.booleanuk.api.models.Author;
+import com.booleanuk.api.models.Book;
 import com.booleanuk.api.repositories.AuthorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -8,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -81,6 +83,7 @@ public class AuthorController {
                         )
                 );
         this.authorRepository.delete(authorToDelete);
+        authorToDelete.setBooks(new ArrayList<Book>());
         return ResponseEntity.ok(authorToDelete);
     }
 }
