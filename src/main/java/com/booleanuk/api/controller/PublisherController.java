@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -17,13 +18,15 @@ public class PublisherController {
     private PublisherRepository publisherRepository;
 
     @GetMapping
-    public List<Publisher> getALlPublishers() {
+    public List<Publisher> getAllPublishers() {
         return this.publisherRepository.findAll();
     }
 
     @PostMapping
     public ResponseEntity<Publisher> createPublisher(@RequestBody Publisher publisher) {
-        return new ResponseEntity<>(this.publisherRepository.save(publisher), HttpStatus.CREATED);
+        Publisher createdPublisher = this.publisherRepository.save(publisher);
+        createdPublisher.setBooks(new ArrayList<>());
+        return new ResponseEntity<>(createdPublisher, HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
@@ -34,7 +37,13 @@ public class PublisherController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Publisher> deletePublisher(@PathVariable int id) {
         Publisher publisherToDelete = this.getPublisherWithNotFound(id);
-        this.publisherRepository.delete(publisherToDelete);
+        try {
+            this.publisherRepository.delete(publisherToDelete);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "Publisher is a foreign key to a Book");
+        }
+        publisherToDelete.setBooks(new ArrayList<>());
         return ResponseEntity.ok(publisherToDelete);
     }
 

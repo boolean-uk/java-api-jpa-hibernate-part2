@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -17,13 +18,15 @@ public class AuthorController {
     private AuthorRepository authorRepository;
 
     @GetMapping
-    public List<Author> getALlAuthors() {
+    public List<Author> getAllAuthors() {
         return this.authorRepository.findAll();
     }
 
     @PostMapping
     public ResponseEntity<Author> createAuthor(@RequestBody Author author) {
-        return new ResponseEntity<>(this.authorRepository.save(author), HttpStatus.CREATED);
+        Author createdAuthor = this.authorRepository.save(author);
+        createdAuthor.setBooks(new ArrayList<>());
+        return new ResponseEntity<>(createdAuthor, HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
@@ -34,7 +37,13 @@ public class AuthorController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Author> deleteAuthor(@PathVariable int id) {
         Author authorToDelete = this.getAuthorWithNotFound(id);
-        this.authorRepository.delete(authorToDelete);
+        try {
+            this.authorRepository.delete(authorToDelete);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "Author is a foreign key to a Book");
+        }
+        authorToDelete.setBooks(new ArrayList<>());
         return ResponseEntity.ok(authorToDelete);
     }
 
@@ -47,7 +56,6 @@ public class AuthorController {
         authorToUpdate.setAlive(author.getAlive());
         return new ResponseEntity<>(this.authorRepository.save(authorToUpdate), HttpStatus.CREATED);
     }
-
 
     //--------------------------- Private section---------------------------//
 
