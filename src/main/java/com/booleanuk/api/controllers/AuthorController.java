@@ -4,6 +4,7 @@ import com.booleanuk.api.models.Author;
 import com.booleanuk.api.models.Book;
 import com.booleanuk.api.repositories.AuthorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -56,7 +57,11 @@ public class AuthorController {
     @DeleteMapping("{id}")
     public Author deleteById(@PathVariable int id) {
         Author authorToDelete = this.repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        this.repository.delete(authorToDelete);
+        try {
+            this.repository.delete(authorToDelete);
+        } catch (DataIntegrityViolationException e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not delete author: Author exists as FK in one or more books");
+        }
         return authorToDelete;
     }
 

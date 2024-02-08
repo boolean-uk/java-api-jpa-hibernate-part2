@@ -2,6 +2,7 @@ package com.booleanuk.api.controllers;
 
 import com.booleanuk.api.models.Publisher;
 import com.booleanuk.api.repositories.PublisherRepository;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -26,7 +27,7 @@ public class PublisherController {
     }
 
     @GetMapping
-    public List<Publisher> getAll(@RequestParam String location) {
+    public List<Publisher> getAll(@RequestParam(required = false) String location) {
         if (location != null && !location.isBlank()) {
             return this.repository.findAllByLocation(location);
         }
@@ -53,7 +54,11 @@ public class PublisherController {
     @DeleteMapping("{id}")
     public Publisher deleteById(@PathVariable int id) {
         Publisher publisherToDelete = this.repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        this.repository.delete(publisherToDelete);
+        try {
+            this.repository.delete(publisherToDelete);
+        } catch (DataIntegrityViolationException e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not delete publisher: Publisher exists as FK in one or more books");
+        }
         return publisherToDelete;
     }
 
