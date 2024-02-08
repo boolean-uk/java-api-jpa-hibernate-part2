@@ -1,5 +1,6 @@
 package com.booleanuk.api.publishers;
 
+import com.booleanuk.api.publishers.dto.PublisherDTO;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package com.booleanuk.api.publishers;
+package com.booleanuk.api.authors.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -8,12 +8,17 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
-public class PublisherDTO {
+@NoArgsConstructor
+public class AuthorDTO {
     private int id;
 
-    private String name;
+    private String firstName;
 
-    private String location;
+    private String lastName;
+
+    private String email;
+
+    private Boolean alive;
+
 }
