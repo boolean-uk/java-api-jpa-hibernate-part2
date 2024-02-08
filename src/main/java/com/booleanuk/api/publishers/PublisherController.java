@@ -1,11 +1,13 @@
 package com.booleanuk.api.publishers;
 
+import com.booleanuk.api.books.Book;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -26,21 +28,15 @@ public class PublisherController {
 
     @PostMapping
     public ResponseEntity<Publisher> create(@RequestBody Publisher publisher){
-        if (publishers.existsByNameAndLocation(publisher.getName(), publisher.getLocation())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "This publisher is already registered.");
-        }
+        Publisher created = publishers.save(publisher);
+        created.setBooks(new ArrayList<Book>());
 
-        return new ResponseEntity<Publisher>(publishers.save(publisher), HttpStatus.CREATED);
+        return new ResponseEntity<Publisher>(created, HttpStatus.CREATED);
     }
 
     @PutMapping("{id}")
     public ResponseEntity<Publisher> update(@PathVariable int id, @RequestBody Publisher publisher){
         Publisher toUpdate = getByID(id);
-
-        if (publishers.existsByNameAndLocation(publisher.getName(), publisher.getLocation())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "This publisher is already registered.");
-        }
-
         toUpdate.setName(publisher.getName());
         toUpdate.setLocation(publisher.getLocation());
 
@@ -51,6 +47,7 @@ public class PublisherController {
     public ResponseEntity<Publisher> delete(@PathVariable int id){
         Publisher toDelete = getByID(id);
         publishers.delete(toDelete);
+        toDelete.setBooks(new ArrayList<Book>());
 
         return ResponseEntity.ok(toDelete);
     }
