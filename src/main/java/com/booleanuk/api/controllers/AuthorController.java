@@ -3,7 +3,10 @@ package com.booleanuk.api.controllers;
 import com.booleanuk.api.model.Author;
 import com.booleanuk.api.repositories.AuthorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -21,7 +24,10 @@ public class AuthorController {
     record AuthorDTO (String first_name, String last_name, String email, boolean alive) {}
 
     @PostMapping
-    public Author create(@RequestBody AuthorDTO author) {
-        return this.repository.save(new Author(author.first_name, author.last_name, author.email, author.alive));
+    public ResponseEntity<Author> create(@RequestBody AuthorDTO author) {
+        if (author.first_name == null || author.last_name == null || author.email == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Bad request");
+        }
+        return new ResponseEntity<>(this.repository.save(new Author(author.first_name, author.last_name, author.email, author.alive)), HttpStatus.CREATED);
     }
 }
