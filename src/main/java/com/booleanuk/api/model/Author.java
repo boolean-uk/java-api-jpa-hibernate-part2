@@ -31,8 +31,7 @@ public class Author {
     @Column
     private boolean alive;
 
-    // Can show the books of the author if needed
-    /*@OneToMany(mappedBy = "author")
+    @OneToMany(mappedBy = "author")
     @JsonIgnoreProperties(value = {"author"})
-    private List<Book> books;*/
+    private List<Book> books;
 }

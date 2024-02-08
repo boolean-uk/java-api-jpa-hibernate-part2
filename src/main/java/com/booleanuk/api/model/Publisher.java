@@ -23,8 +23,7 @@ public class Publisher {
     @Column
     private String location;
 
-    // Can show all books from a publisher if needed
-    /*@OneToMany(mappedBy = "publisher")
+    @OneToMany(mappedBy = "publisher")
     @JsonIgnoreProperties(value = {"publisher"})
-    private List<Book> books;*/
+    private List<Book> books;
 }
