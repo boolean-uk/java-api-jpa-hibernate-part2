@@ -13,44 +13,40 @@ import java.util.List;
 @RestController
 @RequestMapping("authors")
 public class AuthorController {
-    record PostAuthor(String firstName, String lastName, String email, Boolean isAlive) {}
+    record PostAuthor(String first_name, String last_name, String email, Boolean alive) {}
 
     @Autowired
-    final AuthorRepo repository;
-
-    public AuthorController(AuthorRepo repository) {
-        this.repository = repository;
-    }
+    private AuthorRepo authorRepository;
 
     @GetMapping
     public List<Author> getAll() {
-        return repository.findAll();
+        return authorRepository.findAll();
     }
 
     @GetMapping("{id}")
     public ResponseEntity<Author> getById(@PathVariable final Integer id) {
-        return new ResponseEntity<>(repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found.")), HttpStatus.OK);
+        return new ResponseEntity<>(authorRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found.")), HttpStatus.OK);
     }
 
     @PostMapping
     public ResponseEntity<Author> create(@RequestBody PostAuthor request) {
-        return new ResponseEntity<>(repository.save(new Author(request.firstName, request.lastName, request.email, request.isAlive)), HttpStatus.CREATED);
+        return new ResponseEntity<>(authorRepository.save(new Author(request.first_name, request.last_name, request.email, request.alive)), HttpStatus.CREATED);
     }
 
     @PutMapping("{id}")
     public ResponseEntity<Author> update(@PathVariable final Integer id, @RequestBody final Author author) {
-        Author _targetAuthor = repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found."));
+        Author _targetAuthor = authorRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found."));
 
-        _targetAuthor.firstName = author.firstName;
-        _targetAuthor.lastName = author.lastName;
-        _targetAuthor.email = author.email;
-        _targetAuthor.isAlive = author.isAlive;
+        _targetAuthor.setFirst_name(author.getFirst_name());
+        _targetAuthor.setLast_name(author.getLast_name());
+        _targetAuthor.setEmail(author.getEmail());
+        _targetAuthor.setAlive(author.getAlive());
 
-        return new ResponseEntity<>(repository.save(_targetAuthor), HttpStatus.CREATED);
+        return new ResponseEntity<>(authorRepository.save(_targetAuthor), HttpStatus.CREATED);
     }
 
     @DeleteMapping("{id}")
     public ResponseEntity<Author> remove(@PathVariable final Integer id) {
-        return new ResponseEntity<>(repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found.")), HttpStatus.OK);
+        return new ResponseEntity<>(authorRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found.")), HttpStatus.OK);
     }
 }

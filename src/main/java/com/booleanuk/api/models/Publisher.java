@@ -2,9 +2,17 @@ package com.booleanuk.api.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
 
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 @Entity
 @Table(name = "publisher")
 public class Publisher {
@@ -12,16 +20,14 @@ public class Publisher {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "name")
-    public String name;
-    @Column(name = "location")
-    public String location;
+    @Column
+    private String name;
+    @Column
+    private String location;
 
-    @OneToMany(mappedBy = "publisher")
-    @JsonIgnoreProperties("publisher")
+    @OneToMany(mappedBy = "publisher_id")
+    @JsonIgnoreProperties("publisher_id")
     private List<Book> books;
-
-    public Publisher() {}
 
     public Publisher(final Integer id) {
         this.id = id;
@@ -36,9 +42,5 @@ public class Publisher {
     public Publisher(final String name, final String location) {
         this.name = name;
         this.location = location;
-    }
-
-    public Integer getId() {
-        return id;
     }
 }

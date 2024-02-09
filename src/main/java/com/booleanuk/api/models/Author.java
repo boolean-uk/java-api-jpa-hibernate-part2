@@ -1,10 +1,18 @@
 package com.booleanuk.api.models;
 
-import com.fasterxml.jackson.annotation.JsonIncludeProperties;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
 
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 @Entity
 @Table(name = "author")
 public class Author {
@@ -12,20 +20,18 @@ public class Author {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "first_name")
-    public String firstName;
-    @Column(name = "last_name")
-    public String lastName;
     @Column
-    public String email;
-    @Column(name = "is_alive")
-    public Boolean isAlive;
+    private String first_name;
+    @Column
+    private String last_name;
+    @Column
+    private String email;
+    @Column
+    private Boolean alive;
 
-    @OneToMany(mappedBy = "author")
-    @JsonIncludeProperties(value = { "first_name", "last_name", "email", "is_alive" })
+    @OneToMany(mappedBy = "author_id")
+    @JsonIgnoreProperties("author_id")
     private List<Book> books;
-
-    public Author() {}
 
     public Author(final Integer id) {
         this.id = id;
@@ -33,20 +39,16 @@ public class Author {
 
     public Author(final Integer id, final String firstName, final String lastName, final String email, final Boolean isAlive) {
         this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.first_name = firstName;
+        this.last_name = lastName;
         this.email = email;
-        this.isAlive = isAlive;
+        this.alive = isAlive;
     }
 
     public Author(final String firstName, final String lastName, final String email, final Boolean isAlive) {
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.first_name = firstName;
+        this.last_name = lastName;
         this.email = email;
-        this.isAlive = isAlive;
-    }
-
-    public Integer getId() {
-        return id;
+        this.alive = isAlive;
     }
 }

@@ -1,9 +1,9 @@
 package com.booleanuk.api.controllers;
 
-import com.booleanuk.api.models.Author;
 import com.booleanuk.api.models.Book;
-import com.booleanuk.api.models.Publisher;
+import com.booleanuk.api.repositories.AuthorRepo;
 import com.booleanuk.api.repositories.BookRepo;
+import com.booleanuk.api.repositories.PublisherRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,14 +15,14 @@ import java.util.List;
 @RestController
 @RequestMapping("books")
 public class BookController {
-    record PostBook(String title, String genre, Author author, Publisher publisher) {}
+    record PostBook(String title, String genre, Integer author_id, Integer publisher_id) {}
 
     @Autowired
-    private final BookRepo repository;
-
-    public BookController(BookRepo repository) {
-        this.repository = repository;
-    }
+    private BookRepo repository;
+    @Autowired
+    private AuthorRepo authorRepository;
+    @Autowired
+    private PublisherRepo publisherRepository;
 
     @GetMapping
     public List<Book> getAll() {
@@ -36,19 +36,19 @@ public class BookController {
 
     @PostMapping
     public ResponseEntity<Book> create(@RequestBody PostBook request) {
-        return new ResponseEntity<>(repository.save(new Book(request.title, request.genre, request.author, request.publisher)), HttpStatus.CREATED);
+        if (request.publisher_id == null || request.author_id == null)
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "ID status: " + request.publisher_id + " - " + request.author_id);
+        return new ResponseEntity<>(repository.save(new Book(request.title, request.genre, authorRepository.findById(request.author_id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND)), publisherRepository.findById(request.publisher_id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND)))), HttpStatus.CREATED);
     }
-
-    // haha funni
 
     @PutMapping("{id}")
     public ResponseEntity<Book> update(@PathVariable final Integer id, @RequestBody final Book book) {
         Book _targetBook = repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found."));
 
-        _targetBook.title = book.title;
-        _targetBook.genre = book.genre;
-        _targetBook.author = book.author;
-        _targetBook.publisher = book.publisher;
+        _targetBook.setTitle(book.getTitle());
+        _targetBook.setGenre(book.getGenre());
+        _targetBook.setAuthor_id(book.getAuthor_id());
+        _targetBook.setPublisher_id(book.getPublisher_id());
         
         return new ResponseEntity<>(repository.save(_targetBook), HttpStatus.CREATED);
     }
