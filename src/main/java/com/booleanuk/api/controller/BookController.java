@@ -24,6 +24,14 @@ public class BookController {
     @Autowired
     private PublisherRepository publisherRepository;
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Book> getById(@PathVariable int id){
+        Book employee = this.bookRepository
+                .findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Not Found"));
+        return ResponseEntity.ok(employee);
+
+    }
     @GetMapping
     public List<Book> getAll(){
         return this.bookRepository.findAll();

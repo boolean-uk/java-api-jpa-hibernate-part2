@@ -3,6 +3,7 @@ import com.booleanuk.api.model.Author;
 import com.booleanuk.api.model.Book;
 import com.booleanuk.api.model.Publisher;
 import com.booleanuk.api.repository.AuthorRepository;
+import com.booleanuk.api.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,8 @@ public class AuthorController {
 
     @Autowired
     private AuthorRepository authorRepository;
+    @Autowired
+    private BookRepository bookRepository;
 
     @GetMapping
     public List<Author> getAll(){
@@ -28,13 +31,13 @@ public class AuthorController {
     public ResponseEntity<Author> createEmployee(@RequestBody Author employee){
         return new ResponseEntity<Author>(this.authorRepository.save(employee), HttpStatus.CREATED) ;
     }
+
     @GetMapping("/{id}")
     public ResponseEntity<Author> getById(@PathVariable int id){
         Author employee = this.authorRepository
                 .findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Not Found"));
         return ResponseEntity.ok(employee);
-
     }
 
     @DeleteMapping("/{id}")
