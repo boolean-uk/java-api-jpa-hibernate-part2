@@ -40,10 +40,29 @@ public class BookController {
         Author tempAuthor = getAnAuthor(book.getAuthor().getId());
         book.setPublisher(tempPublisher);
         book.setAuthor(tempAuthor);
-        return ResponseEntity.ok(this.bookRepository.save(book));
+        return ResponseEntity.status(HttpStatus.CREATED).body(this.bookRepository.save(book));
         
         // MAYBE DELETE LATER SAVE FOR NOW
         //return new ResponseEntity<>(this.bookRepository.save(book), HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Book> deleteBook(@PathVariable int id) {
+        Book bookToDelete = getABook(id);
+        this.bookRepository.delete(bookToDelete);
+        return ResponseEntity.status(HttpStatus.OK).body(bookToDelete);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Book> updateBookById(@PathVariable int id, @RequestBody Book book) {
+        Book bookToUpdate = this.bookRepository
+                .findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Not Found"));
+        bookToUpdate.setTitle(book.getTitle());
+        bookToUpdate.setGenre(book.getGenre());
+        bookToUpdate.setAuthor(book.getAuthor());
+        bookToUpdate.setPublisher(book.getPublisher());
+        return new ResponseEntity<>(this.bookRepository.save(bookToUpdate), HttpStatus.CREATED);
     }
 
     /**
