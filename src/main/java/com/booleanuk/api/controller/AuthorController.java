@@ -42,4 +42,20 @@ public class AuthorController {
     public Author createAuthor(@Valid @RequestBody Author body) {
         return this.authorRepository.save(body);
     }
+
+    @PutMapping("{id}")
+    public ResponseEntity<Author> updateAuthor(@PathVariable int id, @Valid @RequestBody Author body) {
+        return this.authorRepository.findById(id).map(author -> {
+            author.setFirstName(body.getFirstName());
+            author.setLastName(body.getLastName());
+            author.setEmail(body.getEmail());
+            author.setAlive(body.isAlive());
+
+            this.authorRepository.save(author);
+            return ResponseEntity.status(HttpStatus.CREATED).body(author);
+
+        }).orElseThrow(() -> new ResponseStatusException(
+                HttpStatus.NOT_FOUND, "No author with that ID was found"
+        ));
+    }
 }
