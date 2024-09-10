@@ -9,7 +9,7 @@ public class Book {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @Column(name = "title")
     private String title;
@@ -19,15 +19,16 @@ public class Book {
 
     @ManyToOne
     @JoinColumn(name = "author_id")
-    @JsonBackReference
+    @JsonBackReference(value = "author-books")
     private Author author;
 
+    // This creates 415 bug!.
     @ManyToOne
     @JoinColumn(name = "publisher_id")
-    @JsonBackReference
+    @JsonBackReference(value = "publisher-books")
     private Publisher publisher;
 
-    public Book(int id, String title, String genre, Author author, Publisher publisher) {
+    public Book(Integer id, String title, String genre, Author author, Publisher publisher) {
         this.id = id;
         this.title = title;
         this.genre = genre;
@@ -37,11 +38,11 @@ public class Book {
 
     public Book() {}
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -77,4 +78,6 @@ public class Book {
     public void setPublisher(Publisher publisher) {
         this.publisher = publisher;
     }
+
+
 }

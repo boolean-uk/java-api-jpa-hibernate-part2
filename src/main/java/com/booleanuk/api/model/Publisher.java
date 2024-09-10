@@ -1,10 +1,10 @@
 package com.booleanuk.api.model;
-
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
+
 
 @Entity
 @Table(name = "publishers")
@@ -12,7 +12,7 @@ public class Publisher {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @Column(name = "name")
     private String name;
@@ -21,7 +21,7 @@ public class Publisher {
     private String location;
 
     @OneToMany(mappedBy = "publisher")
-    @JsonManagedReference
+    @JsonManagedReference(value = "publisher-books")
     private List<Book> books;
 
     public Publisher(String name, String location) {
@@ -32,11 +32,11 @@ public class Publisher {
 
     public Publisher() {}
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -56,6 +56,7 @@ public class Publisher {
         this.location = location;
     }
 
+
     public List<Book> getBooks() {
         return books;
     }
@@ -63,4 +64,6 @@ public class Publisher {
     public void setBooks(List<Book> books) {
         this.books = books;
     }
+
+
 }
