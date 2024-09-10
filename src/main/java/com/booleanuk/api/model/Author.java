@@ -1,5 +1,6 @@
 package com.booleanuk.api.model;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "authors")
@@ -9,6 +10,7 @@ public class Author {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @NotBlank(message = "First name is mandatory")
     @Column(name = "first_name")
     private String firstName;
 
