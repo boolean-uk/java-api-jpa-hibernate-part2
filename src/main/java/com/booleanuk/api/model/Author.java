@@ -1,6 +1,10 @@
 package com.booleanuk.api.model;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "authors")
@@ -25,12 +29,16 @@ public class Author {
     @Column(name = "alive")
     private boolean alive;
 
+    @OneToMany(mappedBy = "author")
+    @JsonManagedReference
+    private List<Book> books;
 
     public Author(String firstName, String lastName, String email, boolean alive) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.alive = alive;
+        this.books = new ArrayList<>();
     }
 
     public Author() {}
@@ -73,5 +81,13 @@ public class Author {
 
     public void setAlive(boolean alive) {
         this.alive = alive;
+    }
+
+    public List<Book> getBooks() {
+        return books;
+    }
+
+    public void setBooks(List<Book> books) {
+        this.books = books;
     }
 }
