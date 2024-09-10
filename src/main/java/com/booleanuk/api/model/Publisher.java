@@ -1,6 +1,7 @@
 package com.booleanuk.api.model;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,9 +15,11 @@ public class Publisher {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @NotBlank(message = "Name is mandatory")
     @Column(name = "name")
     private String name;
 
+    @NotBlank(message = "Location is mandatory")
     @Column(name = "location")
     private String location;
 

@@ -2,6 +2,7 @@ package com.booleanuk.api.controller;
 
 import com.booleanuk.api.model.Author;
 import com.booleanuk.api.repository.AuthorRepository;
+import com.booleanuk.api.repository.BookRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,9 @@ public class AuthorController {
 
     @Autowired
     private AuthorRepository authorRepository;
+
+    @Autowired
+    private BookRepository bookRepository;
 
 
     @GetMapping
@@ -54,6 +58,22 @@ public class AuthorController {
             this.authorRepository.save(author);
             return ResponseEntity.status(HttpStatus.CREATED).body(author);
 
+        }).orElseThrow(() -> new ResponseStatusException(
+                HttpStatus.NOT_FOUND, "No author with that ID was found"
+        ));
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<Author> deleteAuthor(@PathVariable int id) {
+        return this.authorRepository.findById(id).map(author -> {
+
+            author.getBooks().forEach(book -> {
+                book.setAuthor(null);
+                this.bookRepository.save(book);
+            });
+
+            this.authorRepository.delete(author);
+            return ResponseEntity.ok(author);
         }).orElseThrow(() -> new ResponseStatusException(
                 HttpStatus.NOT_FOUND, "No author with that ID was found"
         ));
