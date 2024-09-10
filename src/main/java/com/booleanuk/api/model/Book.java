@@ -22,14 +22,12 @@ public class Book {
     @JsonBackReference(value = "author-books")
     private Author author;
 
-    // This creates 415 bug!.
     @ManyToOne
     @JoinColumn(name = "publisher_id")
     @JsonBackReference(value = "publisher-books")
     private Publisher publisher;
 
-    public Book(Integer id, String title, String genre, Author author, Publisher publisher) {
-        this.id = id;
+    public Book(String title, String genre, Author author, Publisher publisher) {
         this.title = title;
         this.genre = genre;
         this.author = author;
@@ -78,6 +76,4 @@ public class Book {
     public void setPublisher(Publisher publisher) {
         this.publisher = publisher;
     }
-
-
 }
