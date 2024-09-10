@@ -14,9 +14,11 @@ public class Author {
     @Column(name = "first_name")
     private String firstName;
 
+    @NotBlank(message = "Last name is mandatory")
     @Column(name = "last_name")
     private String lastName;
 
+    @NotBlank(message = "Email is mandatory")
     @Column(name = "email")
     private String email;
 
