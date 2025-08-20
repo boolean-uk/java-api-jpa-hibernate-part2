@@ -36,5 +36,10 @@ out/
 ### VS Code ###
 .vscode/
 
-### Ignore application.yml file ###
-src/main/resources/application.yml
+
+### properties ###
+
+*.properties
+report.html.html
+report.html.json
+application.yml

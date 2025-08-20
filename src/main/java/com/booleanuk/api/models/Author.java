@@ -21,17 +21,24 @@ public class Author {
     private int id;
 
     @Column
-    private String name;
+    private String firstName;
 
     @Column
-    private String location;
+    private String lastName;
+    @Column
+    private String email;
+    @Column
+    private Boolean alive;
 
-//    @OneToMany(mappedBy = "department")
-//    @JsonIgnoreProperties({"department"})
-//    private List<Book> employees;
+    @OneToMany(mappedBy = "author")
+    @JsonIgnoreProperties({"author"})
+    private List<Book> books;
 
-    public Author(String name, String location) {
-        this.name = name;
-        this.location = location;
+
+    public Author(String firstName, String lastName, String email, Boolean alive) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.alive = alive;
     }
 }
